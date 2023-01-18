@@ -1,4 +1,4 @@
-This is BibTeX, Version 0.99d (TeX Live 2021)
+This is BibTeX, Version 0.99d (TeX Live 2022/Homebrew)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: lipics-v2021-sample-article.aux
 The style file: plainurl.bst
@@ -11,45 +11,46 @@ Database file #1: ref.bib
 Warning--empty journal in mortbergtowards
 Warning--empty year in mortbergtowards
 Warning--there's a number but no series in neeman2007algebraic
-You've used 12 entries,
+Warning--empty year in vakil24rising
+You've used 13 entries,
             2882 wiz_defined-function locations,
-            694 strings with 6941 characters,
-and the built_in function-call counts, 5250 in all, are:
-= -- 548
-> -- 178
+            700 strings with 7081 characters,
+and the built_in function-call counts, 5593 in all, are:
+= -- 581
+> -- 187
 < -- 4
-+ -- 65
-- -- 52
-* -- 267
-:= -- 761
-add.period$ -- 40
-call.type$ -- 12
-change.case$ -- 59
++ -- 69
+- -- 54
+* -- 283
+:= -- 810
+add.period$ -- 43
+call.type$ -- 13
+change.case$ -- 63
 chr.to.int$ -- 0
-cite$ -- 15
-duplicate$ -- 157
-empty$ -- 502
-format.name$ -- 52
-if$ -- 1375
+cite$ -- 17
+duplicate$ -- 168
+empty$ -- 538
+format.name$ -- 54
+if$ -- 1466
 int.to.chr$ -- 0
-int.to.str$ -- 12
-missing$ -- 12
-newline$ -- 64
-num.names$ -- 24
-pop$ -- 131
+int.to.str$ -- 13
+missing$ -- 13
+newline$ -- 69
+num.names$ -- 26
+pop$ -- 140
 preamble$ -- 1
-purify$ -- 50
+purify$ -- 53
 quote$ -- 0
-skip$ -- 375
+skip$ -- 402
 stack$ -- 0
-substring$ -- 215
-swap$ -- 41
+substring$ -- 227
+swap$ -- 42
 text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 44
-warning$ -- 3
-while$ -- 38
-width$ -- 14
-write$ -- 135
-(There were 3 warnings)
+type$ -- 48
+warning$ -- 4
+while$ -- 41
+width$ -- 15
+write$ -- 145
+(There were 4 warnings)

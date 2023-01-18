@@ -66,6 +66,12 @@ The {Stacks Project Authors}.
 \newblock \textit{Stacks Project}.
 \newblock \url{https://stacks.math.columbia.edu}, 2018.
 
+\bibitem{vakil24rising}
+Ravi Vakil.
+\newblock The rising sea: Foundations of algebraic geometry. 2017.
+\newblock {\em URL http://virtualmath1. stanford. edu/\~{} vakil/216blog},
+  24:29.
+
 \bibitem{wieser2022graded}
 Eric Wieser and Jujian Zhang.
 \newblock Graded rings in lean’s dependent type theory.

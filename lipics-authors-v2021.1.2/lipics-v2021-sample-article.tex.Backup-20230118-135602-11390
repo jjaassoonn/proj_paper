@@ -151,144 +151,14 @@ Thus to construct a scheme, one needs the following things:
     \item a topological space $X$;
     \item a presheaf $\mathcal{O}$;
     \item a proof that $\mathcal{O}$ satisfies the sheaf condition;
-    \item a proof that all stalks are local;
     \item an open covering $\{U_i\}$ of $X$;
     \item a collection of rings $\{R_i\}$ and isomorphism $(U_i, \mathcal{O}_X\!\mid_{U_i})\cong(\operatorname{Spec}R_i, \mathcal{O}_{\operatorname{Spec} R})$.
 \end{itemize}
 In \Cref{sec:proj_construction_maths}, $\operatorname{Proj}$ construction will be described following the steps above.
-
+aaa
 \subsection{Proj Construction}\label{sec:proj_construction_maths}
-Throughout this section, $R$ will denote a ring and $A$ an $\mathbb{N}$-graded $R$-algebra, in order to keep notations the same as \Cref{sec:formalisation}, the grading of $A$ will be written as $\mathcal{A}$, i.e. $A\cong \bigoplus_{i\in\mathbb{N}}\mathcal{A}_i$ as $R$-algebras.
 
 \paragraph*{Topology}
-\begin{definition}[$\operatorname{Proj}\mathcal{A}$ as a set]
-    $\operatorname{Proj}\mathcal{A}$ is defined to be
-    $
-        \left\{\mathfrak{p}\in \operatorname{Spec}A\mid \mathfrak{p}\text{~is homogeneous and relevant}\right\}    
-    $, where
-    \begin{itemize}
-        \item an ideal $\mathfrak{p}\subseteq A$ is said to be homogeneous if for any $a \in \mathfrak{p}$ and $i\in \mathbb{N}$, $a_i$ is in $\mathfrak{p}$ as well where $a_i \in \mathcal{A}_i$ is the $i$-th projection of $a$ with respect to grading $\mathcal{A}$;
-        \item an ideal $\mathfrak{p}\subseteq A$ is said to be relevant if $\bigoplus_{i=1}^\infty \mathcal{A}_i\not\subseteq \mathfrak{p}$.
-    \end{itemize}
-\end{definition}
-
-Similar to $\operatorname{Spec}$ construction in \Cref{sec:def_scheme}, there is a topology on $\operatorname{Proj}\mathcal{A}$ whose close sets are exactly the zero loci where for any $s \subseteq A$, zero locus of $s$ is $\{\mathfrak p\in \operatorname{Proj}\mathcal{A}\mid \subseteq s \mathfrak{p}\}$; this topology is also called the Zariski topology. For any $a \in A$, $D(a)$ denotes the set $\{x\in \operatorname{Proj}\mathcal{A}\mid a\not\in x\}$.
-
-\begin{theorem} 
-    For any $a\in A$, $D(a)$ is open in Zariski topology and $\{D(a)\mid a\in A\}$ forms a basis of the Zariski topology \cite{stacks-project}.
-    
-\end{theorem}
-
-\paragraph*{Structure sheaf}
-Let $U\subseteq \operatorname{Proj}\mathcal{A}$ be an open subset, the sections on $U$ are defined to be
-\[
-    \mathcal{O}(U) = \left\{s \in \prod_{x\in U}A_x^0\mid s\text{~is locally a homogeneous fraction}\right\},   
-\]
-where $A^0_{\mathfrak{p}}$ denotes the homogeneous localization of $A$ at a homogeneous prime ideal $\mathfrak{p}$, i.e. the subring of $A_{\mathfrak{p}}$ of elements of degree zero and $s$ is said to be locally a homogeneous fraction if for any $x \in U$, there is some open subset $x\in V \subseteq U$, $i\in\mathbb{N}$ and $a, b\in\mathcal{A}_i$ such that for all $y\in V$, $s(y)=\frac{a}{b}$. Equipped with the natural restriction map, $\mathcal{O}$ defined in this way forms a presheaf; sheaf condition of $\mathcal{O}$ is checked in the category of sets where it follows from that being locally a homogeneous fraction is a local predicate and local predicates define subsheaves. This sheaf is called the structure sheaf of $\operatorname{Proj}\mathcal{A}$, also written as $\mathcal{O}_{\operatorname{Proj} A}$
-
-\paragraph*{Locally ringed space}
-\begin{theorem}
-    The stalk of $(\operatorname{Proj}\mathcal{A}, \mathcal{O})$ at a homogeneous prime relevant ideal $\mathfrak{p}$ is isomorphic to $A^0_\mathfrak{p}$.
-\end{theorem}
-\begin{proof}
-    Let $U\ni\mathfrak{p}$ be an open subset of $\operatorname{Proj}\mathcal{A}$, then a ring homomorphism $\mathcal{O}(U)\to A^0_\mathfrak{p}$ can be defined by evaluation at $\mathfrak p$, i.e. Since $\mathcal{O}_{\operatorname{Proj}\mathcal{A},\mathfrak{p}}=\operatorname{colim}_{\mathfrak{p}\in U}\mathcal{O}(U)$, a ring homomorphism $f:\mathcal{O}_{\operatorname{Proj}\mathcal{A},\mathfrak{p}}\to A^0_f$ is obtained by universal property of colimit. To check that $f$ is an isomorphism, it is sufficient to check bijectivity:
-    \begin{itemize}
-        \item Let $z_1=\left\langle s_1, U_1\right\rangle, z_2=\left\langle s_2, U_2\right\rangle \in \mathcal{O}_{\operatorname{Proj}\mathcal{A},\mathfrak{p}}$ be such that $f(z_1)=f(z_2) \stackrel{\mathsf{def}}{\iff} s_1(\mathfrak{p})=s_2(\mathfrak{p})$, then by definition of structure sheaf, there is some open subset $\mathfrak{p}\in V\subseteq U_1\cap U_2$ such that $s_1$ and $s_2$ are both constant on $V$. Since $s_1, s_2$ restrict to the same section on $V$, $z_1 = z_2$ hence proving injectivity.
-        \item There is a function $A^0_{\mathfrak{p}}\to \mathcal{O}_{\operatorname{Proj}\mathcal{A},\mathfrak{p}}$ defined by $\frac a b\mapsto \left\langle D(b), x\mapsto \frac a b\right\rangle$, this function is in fact a right inverse to $f$.
-    \end{itemize}
-\end{proof}
-
-Since $A^0_{\mathfrak{p}}$ is a local ring for any homogeneous prime ideal $\mathfrak{p}$, it can be concluded that $(\operatorname{Proj}\mathcal{A},\mathcal{O}_{\operatorname{Proj}\mathcal{A}})$ is a locally ringed space.
-
-\paragraph*{Affine cover}
-
-\begin{lemma}
-    For any $x\in \operatorname{Proj}\mathcal{A}$, there is some $0 < m \in \mathbb{N}$ and $f\in \mathcal{A}_m$, such that $x\in D(f)\stackrel{\mathsf{def}}{\iff}f\not\in x$.
-\end{lemma}
-\begin{proof}
-    Let $x\in \operatorname{Proj}\mathcal A$, by construction, $\bigoplus_{i=1}^\infty\mathcal{A}_i\not\subseteq x$. Thus there is some $f=f_1+f_2+\dots\not\in x$, then at least one $f_i\not\in x$ for otherwise $f\in x$.
-\end{proof}
-
-Thus, to construct an affine cover, it is sufficient to prove that for all $0<m\in \mathbb{N}$ and homogeneous element $f\in\mathcal{A}_m$, $(D(f),\mathcal{O}_{\operatorname{Proj}\mathcal{A}}\!\mid_{D(f)})\cong (\operatorname{Spec} A^0_f, \mathcal{O}_{\operatorname{Spec} A^0_f})$ where $A^0_f$ is the subring of the localised ring $A_f$ consisted of elements of degree zero. Now fix these notations, an isomorphism between locally ringed space can be constructed as a pair $(\phi, \alpha)$ where $\phi$ is a homeomorphism between topological space $D(f)\cong\operatorname{Spec}A^0_f $ and $\alpha$ an isomorphism between
-$\phi_*(\mathcal{O}_{\operatorname{Proj}\mathcal{A}}\!\mid_{D(f)})\cong \mathcal{O}_{\operatorname{Spec}A^0_f}$.
-
-\begin{theorem}
-    $D(f)\cong \operatorname{Spec}A^0_f$ are homeomorphic as topological spaces.
-\end{theorem}
-The following proof is an expansion of \cite[II.2.5]{hartshorne1977graduate} while drawing ideas from \cite[II.4.5]{vakil24rising}.
-
-\begin{proof}
-    Define $\phi: D(f) \to\operatorname{Spec}A^0_f$ by
-    $\mathfrak{p}\mapsto\operatorname{span}\left\{\frac{g}1\mid g\in\mathfrak{p}\right\}\cap A^0_f$; by clearing denominators, one can show that $\phi(\mathfrak{p})=\operatorname{span}\left\{\frac g{f^i}|g\in \mathfrak p\cap A_{mi}\right\}$. For $\phi$ to be well-defined, the following can be checked:
-    \begin{itemize}
-        \item $1\not\in\phi(\mathfrak{p})$: for otherwise
-        $1 = \sum_i\frac{a_i}{f^{n_i}}\frac {g_i}1$,
-        by multiplying a suitable power of $f$,
-        $\frac{f^N} 1 = \frac{\sum_i a_i g_i f^{k_i}}1$ for some $N$; by definition of localisation,  $f^M f^N=f^M \sum_i a_i g_i f^{k_i}$ for some $M$, since the right handside is in $\mathfrak p$, the left handside is in $\mathfrak p$ too, implying $f\in\mathfrak p$. Contradiction.
-        \item If $x_1 x_2\in =\phi(\mathfrak p)$, then either $x_1\in\phi(\mathfrak p)$ or $x_2 \in \phi(\mathfrak p)$: write $x_1=\frac{a_1}{f^{n_1}}$ and $x_2=\frac{a_2}{f^{n_2}}$, then $\frac{a_1a_2}{f^{n_1+n_2}}\in\mathrm{span}\left\{\frac g1|g \in \mathfrak p\right\}$, so write
-        $\frac{a_1a_2}{f^{n_1+n_2}}=\sum_i \frac{c_i}{f^{n_i}}\frac{g_i}1$,
-        by multiplying a suitable power of $f$, we get
-        $
-        \frac{a_1a_2f^N}1=\frac{\sum_i c_ig_if^{k_i}}1
-        $ for some $N$, then by definition of localisation, $a_1a_2f^N f^M=f^M\sum_i c_ig_if^{k_i}$ for some $M$, since right handside is in $\mathfrak p$ and $f\not\in\mathfrak p$, either $a_1\in\mathfrak p$ or $a_2\in\mathfrak p$.
-        \item $\phi$ is continuous: since $\mathrm{Spec}A^0_f$ also has a topological basis of basic open sets, it suffices to check preimage of basic open sets. Take $\frac{a}{f^n}\in A^0_f$, then $\phi^{-1}\left(D\left(\frac a{f^n}\right)\right)=D(f)\cap D(a)$. 
-        \begin{itemize}
-            \item $D(f)\cap D(a)\subseteq \phi^{-1}\left(D\left(\frac a{f^n}\right)\right)$ because if $y\in D(f)\cap D(a)$ and $\frac a{f^n}\in \phi(y)$, i.e.
-            $
-            \frac a{f^n}=\sum_i \frac{c_i}{f^{n_i}}\frac{g_i}1,
-            $
-            then by multiplying suitable powers of $f$,
-            $
-            \frac{a f^N}1=\frac{\sum_i c_ig_if^{m_i}}1
-            $ for some $N$, by definition of localisation, $af^N f^M=\sum_i c_i g_i f^{m_i}$ for some $M$ implying that $a\in y$. Contradiction.
-            \item On the other hand, if $\phi(y)\in D\left(\frac a{f^n}\right)$ and $a\in y$, then $\frac a 1\in h(y)$, contradiction because $\frac a{f^n}=\frac a1\frac1{f^n}\in \phi(y)$.
-        \end{itemize}
-    \end{itemize}
-    For the other direction, define $\psi: \operatorname{Spec} A^0_f\to{D(f)}$ to be $x \mapsto \left\{a\mid\text{for all $i\in\mathbb N$, $\frac{a_i^m}{f^i}\in x$}\right\}$. The following can be checked:
-    \begin{itemize}
-        \item $0\in \psi(x)$ for obvious reason.
-        \item if $a,b\in \psi(x)$, then $a + b\in \psi(x)$: since $x$ is prime, it is sufficient to show
-            $\left(\frac{(a_i+b_i)^m}{f^i}\right)^2 = \sum_{j=0}^{2m}{2m\choose j}\frac{a_i^j b_i^{2m-j}}{f^{2i}}\in x$.
-
-        if $m\le j$, we write
-        $$
-        \frac{a_i^j b_i^{2m-j}}{f^{2i}} = \boxed{\frac{a_i^m}{f^i}}\frac{a_i^{j-m}b_i^{2m-j}}{f^i};
-        $$
-        otherwise, we write
-        $$
-        \frac{a_i^j b_i^{2m-j}}{f^{2i}} =\boxed{\frac{b_i^m}{f^i}}\frac{a_i^jb_i^{m-j}}{f^i}.
-        $$
-        By assumption, the boxed parts are both in $x$, thus $\left(\frac{(a_i+b_i)^m}{f^i}\right)^2$ is also in $x$.
-        \item if $a, b \in A$ and $b\in \psi(x)$, then $ab\in \psi(x)$: inducting on $a$, one obtain that
-        \begin{itemize}
-            \item if $a = 0$, then $(ab)_i=0$;
-            \item if $a\in \mathcal{A}_n$ and $n\le i$ then $(ab)_i=ab_{n-i}$;
-            \item if the result hold for $a, a'$, then $(a+a')b=ab+a'b\in \psi(x)$.
-        \end{itemize}
-        \item $\psi(x)$ is homogeneous: if $a\in \psi(x)$ then for any $i\in\mathbb N$, $a_i\in \psi(x)$, because $\left(a_i\right)_j=a_i$ or $0$ for all natural number $j$.
-        \item $\psi(x)$ is prime: for a homogeneous ideal, prime condition is equivalent to being homogeneously prime, i.e. $\mathfrak p$ is prime if and only if $1\not\in\mathfrak p$ and for any $a\in A_i$ and $b\in A_j$, $ab\in\mathfrak p$ implies $a\in\mathfrak p$ or $b\in\mathfrak p$.  $1\not\in\psi(x)$ for the first projection of $1$ is $1$ which is not $x$. Suppose $a\in A_i$ and $b\in A_j$, suppose $a,b\not\in \psi(x)$ then $\frac{a_n^m}{f^n}\not\in x$ for some $n\in\mathbb N$ and $\frac{b_k^m}{f^k}\not\in x$ for some $k\in\mathbb N$. Then $n=i$ for otherwise $0\not\in x$ and similarly $k=j$. So $\frac{(ab)_{i+j}^m}{f^{i+j}}=\frac{a_i^m}{f^i}\frac{b_j^m}{f^j}\not\in x$.
-        \item  $\psi(x)$ is relevant: for otherwise $\bigoplus_{1\le i}\mathcal{A}_i\subseteq \psi(x)$ then $f\not\in \psi(x)$, for otherwise $1=\frac{f_m^m}{f^m}\in x$, a contradiction; however $f\in\bigoplus_{1\le i}\mathcal{A}_i$, since $f_0=0$.
-    \end{itemize}
-    $\psi$ being continuous depends on that $\psi$ and $\phi$ are inverses to each other:
-    \begin{itemize}
-        \item $\phi\circ \psi=1$:
-        \begin{itemize}
-            \item $\phi(\psi(x))\subseteq x$: if $z\in \phi(\psi(x))$ then $z\in\mathrm{span}\left\{\frac c{f^i}|c\in g(x)\cap A_{mi}\right\}$. So $z$ can be written as
-            $z=\sum_i \frac{a_i}{f^{n_i}}\frac{c_i}{f^{k_i}}$;
-            since $c_i\in \psi(x)\cap A_{mk_i}$, $\frac{c_i^m}{f^{mk_i}}\in x$ implying that $\frac{c_i}{f^{k_i}}\in x$ and $z \in x$.
-            \item $x\subseteq \phi(\psi(x))$: if $\frac{a}{f^k} \in x$ for $a\in A_{mk}$, then $a\in \psi(x)$ for $\frac{a_i^m}{f^i}=\frac{a^m}{f^{mk}}=\left(\frac{a}{f^k}\right)^m\in x$ if $i=mk$ or $0$ otherwise. Thus $\frac{a}{f^k}\in\mathrm{span}\left\{\frac c1|c \in g(x)\right\}\cap A^0_f$ since $\frac{a}{f^k}=\frac a 1\frac1{f^k}$.
-        \end{itemize}
-        \item $\psi\circ \phi=1$:
-        \begin{itemize}
-            \item $\psi(\phi(x))\subseteq x$: let $z\in \psi(\phi(x))$ and $i$ be a natural number, since $\frac{z_i^m}{f^i}\in \phi(x)$, $\frac{z_i^m}{f^i}$ can be written as $\sum_j\frac{c_j}{f^{n_j}}\frac{d_j}1$
-            with $d_j\in x$, by multiplying a suitable power of $f$,
-            $z_i^mf^N=\sum_jc_jd_jf^{N_j}$ for some $N$ implying that $z_i\in x$.
-            \item $x\le \psi(\phi(x))$: if $z\in x$, then $z_i\in x$ for all natural number $i$ by homogeneity. So $\frac{z_i^m}{f^i}=\frac1{f^i}\left(\frac{z_i}1\right)^m\in \phi(x)$ because $\frac{z_i}1\in \phi(x)$.
-        \end{itemize}
-    \end{itemize}
-    Thus $\phi$ and $\psi$ are both bijections implying that $\psi$ is continuous as well: ${D(f)}$ has a basis of the form $D(f)\cap D(a)$, thus it is sufficient to prove that preimages of these sets are open. By considering $\phi(D(f)\cap D(a))=\bigcup_i \phi(D(f)\cap D(a_i))$, each $\phi(D(f)\cap D(a_i))$ is open because $\phi(D(f)\cap D(a_i))=D\left(\frac{a_i^m}{f^i}\right)$ in $\mathrm{Spec} A^0_f$. To prove $\phi(D(f)\cap D(a_i))=D\left(\frac{a_i^m}{f^i}\right)$, it is sufficient to prove $\phi^{-1}(D\left(\frac{a_i^m}{f^i}\right))=D(f)\cap D(a)$ and this proven in continuity of $\phi$. Since $\phi$ and $\psi$ are inverses to each other, preimage of $D(f)\cap D(a)$ is indeed $\phi(D(f)\cap D(a))$.
-    Thus we have proven that $\phi: D(f)\cong \mathrm{Spec} A^0_f$ as topological spaces.
-\end{proof}
 
 \section{Formalisation details}\label{sec:formalisation}
 
@@ -296,4 +166,3 @@ The following proof is an expansion of \cite[II.2.5]{hartshorne1977graduate} whi
 \bibliography{ref}
 
 \end{document}
-
