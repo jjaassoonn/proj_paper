@@ -1,0 +1,75 @@
+\begin{thebibliography}{10}
+
+\bibitem{doi:10.1080/10586458.2022.2062073}
+Anthony Bordg, Lawrence Paulson, and Wenda Li.
+\newblock Simple type theory is not too simple: Grothendieck’s schemes
+  without dependent types.
+\newblock {\em Experimental Mathematics}, 31(2):364--382, 2022.
+\newblock \href
+  {http://arxiv.org/abs/https://doi.org/10.1080/10586458.2022.2062073}
+  {\path{arXiv:https://doi.org/10.1080/10586458.2022.2062073}}, \href
+  {https://doi.org/10.1080/10586458.2022.2062073}
+  {\path{doi:10.1080/10586458.2022.2062073}}.
+
+\bibitem{buzzard2022schemes}
+Kevin Buzzard, Chris Hughes, Kenny Lau, Amelia Livingston, Ramon~Fern{\'a}ndez
+  Mir, and Scott Morrison.
+\newblock Schemes in lean.
+\newblock {\em Experimental Mathematics}, 31(2):355--363, 2022.
+
+\bibitem{chicli2001formalisation}
+Laurent Chicli.
+\newblock {\em Une formalisation des faisceaux et des sch{\'e}mas affines en
+  th{\'e}orie des types avec Coq}.
+\newblock PhD thesis, INRIA, 2001.
+
+\bibitem{chowtheorem}
+Wei-Liang Chow.
+\newblock On compact complex analytic varieties.
+\newblock {\em American Journal of Mathematics}, 71(4):893--914, 1949.
+\newblock URL: \url{http://www.jstor.org/stable/2372375}.
+
+\bibitem{de2015lean}
+Leonardo de~Moura, Soonho Kong, Jeremy Avigad, Floris Van~Doorn, and Jakob von
+  Raumer.
+\newblock The lean theorem prover (system description).
+\newblock In {\em International Conference on Automated Deduction}, pages
+  378--388. Springer, 2015.
+
+\bibitem{hartshorne1977graduate}
+Robin Hartshorne.
+\newblock Graduate texts in mathematics.
+\newblock {\em Algebraic Geometry}, 52, 1977.
+
+\bibitem{maclane2012sheaves}
+Saunders MacLane and Ieke Moerdijk.
+\newblock {\em Sheaves in geometry and logic: A first introduction to topos
+  theory}.
+\newblock Springer Science \& Business Media, 2012.
+
+\bibitem{mortbergtowards}
+Anders M{\"o}rtberg and Max Zeuner.
+\newblock Towards a formalization of affine schemes in cubical agda.
+
+\bibitem{neeman2007algebraic}
+Amnon Neeman.
+\newblock {\em Algebraic and analytic geometry}.
+\newblock Number 345. Cambridge University Press, 2007.
+
+\bibitem{serre1955geometrie}
+Jean-Pierre Serre.
+\newblock G{\'e}om{\'e}trie analytique et g{\'e}om{\'e}trie alg{\'e}brique.
+\newblock {\em Ann. Inst. Fourier, VI (1955--56)}, pages 1--42, 1955.
+
+\bibitem{stacks-project}
+The {Stacks Project Authors}.
+\newblock \textit{Stacks Project}.
+\newblock \url{https://stacks.math.columbia.edu}, 2018.
+
+\bibitem{wieser2022graded}
+Eric Wieser and Jujian Zhang.
+\newblock Graded rings in lean’s dependent type theory.
+\newblock In {\em International Conference on Intelligent Computer
+  Mathematics}, pages 122--137. Springer, 2022.
+
+\end{thebibliography}

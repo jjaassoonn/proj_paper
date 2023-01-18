@@ -1,0 +1,154 @@
+
+\documentclass[a4paper,UKenglish,cleveref, autoref, thm-restate]{lipics-v2021}
+%This is a template for producing LIPIcs articles. 
+%See lipics-v2021-authors-guidelines.pdf for further information.
+%for A4 paper format use option "a4paper", for US-letter use option "letterpaper"
+%for british hyphenation rules use option "UKenglish", for american hyphenation rules use option "USenglish"
+%for section-numbered lemmas etc., use "numberwithinsect"
+%for enabling cleveref support, use "cleveref"
+%for enabling autoref support, use "autoref"
+%for anonymousing the authors (e.g. for double-blind review), add "anonymous"
+%for enabling thm-restate support, use "thm-restate"
+%for enabling a two-column layout for the author/affilation part (only applicable for > 6 authors), use "authorcolumns"
+%for producing a PDF according the PDF/A standard, add "pdfa"
+
+%\pdfoutput=1 %uncomment to ensure pdflatex processing (mandatatory e.g. to submit to arXiv)
+%\hideLIPIcs  %uncomment to remove references to LIPIcs series (logo, DOI, ...), e.g. when preparing a pre-final version to be uploaded to arXiv or another public repository
+
+%\graphicspath{{./graphics/}}%helpful if your graphic files are in another directory
+
+\bibliographystyle{plainurl}% the mandatory bibstyle
+
+\title{Formalising $\operatorname{Proj}$ Construction in Lean} %TODO Please add
+
+%\titlerunning{Dummy short title} %TODO optional, please use if title is longer than one line
+
+% \author{Jane {Open Access}}{Dummy University Computing Laboratory, [optional: Address], Country \and My second affiliation, Country \and \url{http://www.myhomepage.edu} }{johnqpublic@dummyuni.org}{https://orcid.org/0000-0002-1825-0097}{(Optional) author-specific funding acknowledgements}%TODO mandatory, please use full name; only 1 author per \author macro; first two parameters are mandatory, other parameters can be empty. Please provide at least the name of the affiliation and the country. The full address is optional. Use additional curly braces to indicate the correct name splitting when the last name consists of multiple name parts.
+\author{Jujian Zhang}{Department of Mathematics, Imperial College London \and \url{https://www.imperial.ac.uk/}}{jujian.zhang19@imperial.ac.uk}{https://orcid.org/0000-0001-7340-2703}{Schr\"odinger Scholarship Scheme}
+% \author{Joan R. Public\footnote{Optional footnote, e.g. to mark corresponding author}}{Department of Informatics, Dummy College, [optional: Address], Country}{joanrpublic@dummycollege.org}{[orcid]}{[funding]}
+
+% \authorrunning{J. Open Access and J.\,R. Public} %TODO mandatory. First: Use abbreviated first/middle names. Second (only in severe cases): Use first author plus 'et al.'
+\authorrunning{J. Zhang}
+% \Copyright{Jane Open Access and Joan R. Public} %TODO mandatory, please use full first names. LIPIcs license is "CC-BY";  http://creativecommons.org/licenses/by/3.0/
+\Copyright{Jujian Zhang}
+% \ccsdesc[100]{\textcolor{red}{Replace ccsdesc macro with valid one}} %TODO mandatory: Please choose ACM 2012 classifications from https://dl.acm.org/ccs/ccs_flat.cfm 
+
+\ccsdesc[500]{Theory of computation~Logic and verification}
+\ccsdesc[500]{Mathematics of computing~Topology}
+
+\keywords{Lean, formalisation, algebraic geometry, scheme, Proj construction, projective geometry} %TODO mandatory; please add comma-separated list of keywords
+
+\category{} %optional, e.g. invited paper
+
+\relatedversion{} %optional, e.g. full version hosted on arXiv, HAL, or other respository/website
+%\relatedversiondetails[linktext={opt. text shown instead of the URL}, cite=DBLP:books/mk/GrayR93]{Classification (e.g. Full Version, Extended Version, Previous Version}{URL to related version} %linktext and cite are optional
+
+%\supplement{}%optional, e.g. related research data, source code, ... hosted on a repository like zenodo, figshare, GitHub, ...
+%\supplementdetails[linktext={opt. text shown instead of the URL}, cite=DBLP:books/mk/GrayR93, subcategory={Description, Subcategory}, swhid={Software Heritage Identifier}]{General Classification (e.g. Software, Dataset, Model, ...)}{URL to related version} %linktext, cite, and subcategory are optional
+
+%\funding{(Optional) general funding statement \dots}%optional, to capture a funding statement, which applies to all authors. Please enter author specific funding statements as fifth argument of the \author macro.
+
+\funding{}
+
+% \acknowledgements{I want to thank \dots}%optional
+
+\nolinenumbers %uncomment to disable line numbering
+
+%Editor-only macros:: begin (do not touch as author)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\EventEditors{John Q. Open and Joan R. Access}
+\EventNoEds{2}
+\EventLongTitle{42nd Conference on Very Important Topics (CVIT 2016)}
+\EventShortTitle{CVIT 2016}
+\EventAcronym{CVIT}
+\EventYear{2016}
+\EventDate{December 24--27, 2016}
+\EventLocation{Little Whinging, United Kingdom}
+\EventLogo{}
+\SeriesVolume{42}
+\ArticleNo{23}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\supplementdetails[subcategory={Source Code}]{Software}{https://github.com/leanprover-community/mathlib/pull/18138/commits/00c4b0918a2c7a8b62291581b0e1eddf2357b5be}
+
+\usepackage{color}
+\definecolor{keywordcolor}{rgb}{0.7, 0.1, 0.1}   % red
+\definecolor{tacticcolor}{rgb}{0.0, 0.1, 0.6}    % blue
+\definecolor{commentcolor}{rgb}{0.4, 0.4, 0.4}   % grey
+\definecolor{symbolcolor}{rgb}{0.0, 0.1, 0.6}    % blue
+\definecolor{sortcolor}{rgb}{0.1, 0.5, 0.1}      % green
+\definecolor{attributecolor}{rgb}{0.7, 0.1, 0.1} % red
+
+\def\lstlanguagefiles{lstlean.tex}
+% set default language
+\lstset{language=lean}
+
+\usepackage{tikz-cd}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    Many object of interest in mathematics can be studied both analytically and algebraically, while at the same time, it is known that analytic geometry and algebraic geometry generally does not behave the same. However, the famous GAGA theorem asserts that for projective varieties, analytic and algebraic geometries are closely related; proof of the Fermat last theorem, for example, use this technique to transport between the two worlds \cite{serre1955geometrie}. I formalise $\operatorname{Proj}$ construction for any $\mathbb{N}$-graded $R$-algebra $A$ as a starting point to the GAGA theorem and projective $n$-space is constructed as $\operatorname{Proj} A[X_0,\dots, X_n]$. This would the first family of non-affine schemes formalised in any theorem prover.
+\end{abstract}
+
+\section{Introduction}
+Algebraic geometry concerns polynomials and analytic geometry concerns holomorphic functions. Though all polynomials are holomorphic, the converse is not true; thus many analytic objects are not algebraic, for example $\{x \in \mathbb{C} \mid \sin(x) = 0\}$ can not be defined as zero locus of a polynomial in one variable, for polynomials always have only finite number of zeros. However, for projective varieties over $\mathbb{C}$, the categories of algebraic and analytic coherent sheaves are equivalent; an almost immediate consequence for this statement is that all closed analytic subset of projective $n$-space $\mathbb{P}_n$ is also algebraic \cite{serre1955geometrie,chowtheorem}. A crucial step of proving the above statement is to consider cohomology of projective $n$-space $\mathbb{P}_n$  \cite{neeman2007algebraic}. 
+
+While one can define $\mathbb{P}_n$ over $\mathbb{C}$ without consideration of other projective varieties, it would be more fruitful to formalise $\operatorname{Proj}$ construction as a \textbf{scheme} and recover $\mathbb{P}_n$ as $\operatorname{Proj} \mathbb{C}[X_0,\dots, X_n]$, since, among other reasons, by considering different base rings, one obtain different projective varieties, for example, for any homogeneous polynomials $f_1,\dots, f_k$, $\operatorname{Proj}\left(\frac{\mathbb{C}[X_0,\dots,X_n]}{(f_1,\dots,f_k)}\right)$ defines a projective hypersurface over $\mathbb{C}$.
+
+In this paper I describe a formal construction of $\operatorname{Proj} A$ in the Lean3 \cite{de2015lean} theorem prover which closely follows \cite[Chapter~II]{hartshorne1977graduate}. The formal construction use various results from the Lean mathematical library \textsf{mathlib}, most notably the graded algebra and $\operatorname{Spec}$ construction; this project has been partly accepted into \textsf{mathlib} already while the remainder is still undergoing a review process. The code discussed in this paper can be found on GitHub\footnote{url: \texttt{https://github.com/leanprover-community/mathlib/pull/18138/}}.  I have freely used axiom of choice and law of excluded middle throughout the project since the rest of \textsf{mathlib} freely use classical reasoning as well; consequently, the final construction is not computable.
+
+As previously mentioned, $\operatorname{Proj}$ construction heavily depends on graded algebra and $\operatorname{Spec}$ construction. A detailed description for graded algebra in Lean  and \textsf{mathlib} as well as comparison with graded algebra in other theorem provers can be found in \cite{wieser2022graded}, for my purpose, I have chosen to use internal grading for any graded ring $A \cong \bigoplus \mathcal{A}_i$ so that the result of construction is about homogeneous prime ideals of $A$ directly instead of $\bigoplus_i \mathcal{A}_i$. The earliest $\operatorname{Spec}$ construction in Lean and any other theorem prover can be found in \cite{buzzard2022schemes} where the construction followed a ``sheaf-on-a-basis'' approach from \cite[\href{https://stacks.math.columbia.edu/tag/01HR}{Section 01HR}]{stacks-project}, however it differs significantly from the $\operatorname{Spec}$ construction currently found in \textsf{mathlib} where proofs from \cite[Chapter~II]{hartshorne1977graduate} were used; for this reason I have also chosen to follow the latter reference. Some other theorem provers also have or partially have $\operatorname{Spec}$ construction: in Isabelle/HOL, $\operatorname{Spec}$ is formalised by using locales and rewriting topology and ring theory part of existing library in \cite{doi:10.1080/10586458.2022.2062073}, however the category of scheme is yet to be formalized; an early formalisation of $\operatorname{Spec}$ in Coq can be found in \cite{chicli2001formalisation} and a definition of scheme in general can be found in its \texttt{UniMath} library; due to homotopy type theory, only a partial formalisation of $\operatorname{Spec}$ construction can be found in \cite{mortbergtowards}. Though some theorem provers have definition of a general scheme, I could not find any concrete construction of a scheme other that $\operatorname{Spec}$ of a ring\footnote{In this paper, all rings are assumed to be unital and commutative.}.
+
+After explaining the mathematical details involved in $\operatorname{Proj}$ construction in Section~\ref{sec:maths}, Lean code will be provided and explained in Section~\ref{sec:formalisation}. For typographical reasons, some code of formalisation will be omitted and marked as \texttt{sorry}.
+
+\section{Mathematical details}\label{sec:maths}
+In this section, familiarity of basic ring theory, topology and category theory will be assumed. In \Cref{sec:pre-def,sec:def_scheme}, definition of a scheme is explained in detail; $\operatorname{Spec}$ construction will also be briefly explained in order to fix the mathematical approach used in \textsf{mathlib}. Then by following definition of a scheme step by step, $\operatorname{Proj}$ construction will be explained in \Cref{sec:proj_construction_maths}.
+
+\subsection{Sheaves and Locally Ringed Spaces}\label{sec:pre-def}
+Let $X$ be a topological space and $\mathfrak{Opens}(X)$ be the category of open subsets of $X$.
+
+\begin{definition}[Presheaves~\cite{maclane2012sheaves}] 
+    Let $C$ be a category, a $C$-valued presheaf $\mathcal{F}$ on $X$ is a functor $\mathfrak{Opens}(X)^{\mathsf{op}} \Longrightarrow C$. Morphisms between $C$-valued functor $\mathcal{F, G}$ are natural transformation. The category thus formed is denoted as $\mathfrak{PSh}(X, C)$.
+    \label{def:presheaf}
+\end{definition}
+In this paper, the category of interest is category of presheaves of rings $\mathfrak{Psh}(X, \mathfrak{Ring})$. More explicitly, a presheaf of ring $\mathcal{F}$ assigns each open subset $U \subseteq X$ with a ring $\mathcal{F}(U)$ called sections on $U$ and for any open subsets $U \subseteq V\subseteq X$ a ring homomorphism $\mathcal{F}(V)\to\mathcal{F}(U)$ often denoted as $\mathrm{res}^V_U$ or simply with a vertical bar $s\!\mid_U$ (a section $s$ on $V$ restricted to $U$). Examples of presheaf of rings are abundant: considering open subsets of $\mathbb{C}$, $U \mapsto \{\text{(continuous, holomorphic) functions on~} U\}$ with the natural restriction map defines presheaf of rings. In these examples, compatible sections on different open subsets can be glued together to form bigger sections on union of the said open subsets; this property can be generalized to arbitrary category:
+
+\begin{definition}[Sheaves~\cite{maclane2012sheaves,stacks-project}]
+    A presheaf $\mathcal{F}\in\mathfrak{Psh}(X, C)$ is said to be a sheaf if for any open covering of open set $U=\bigcup_i U_i \subseteq X$, the following diagram is an equalizer
+    \[
+        \begin{tikzcd}[sep=huge]
+        \mathcal{F}(U) \arrow[r, "\left(\mathrm{res}^U_{U_i}\right)"] & \prod_i \mathcal{F}(U_i) \arrow[r, "\left(\mathrm{res}^{U_i}_{U_i\cap U_j}\right)"] \arrow[r, shift left, "\left(\mathrm{res}^{U_j}_{U_i\cap U_j}\right)"'] & \prod_{i, j} F(U_i \cap U_j).
+        \end{tikzcd}
+    \]
+    The category of sheaves $\mathfrak{Sh}(X,C)$ is the full subcategory of the category of presheaves.
+\end{definition}
+
+\begin{definition}[Locally Ringed Space~\cite{stacks-project, hartshorne1977graduate}] 
+    If $\mathcal{O}_X$ is a sheaf on $X$, then the pair $(X, \mathcal{O}_X)$ is called a ringed space; a morphism between two ringed space $(X, \mathcal{O}_X)$ and $(Y, \mathcal{O}_Y)$ is a pair $(f, \phi)$ such that $f: X \to Y$ is continuous and $\phi : \mathcal{O}_Y\to f_*\mathcal{O}_X$ is a morphism of sheaves where $f_*\mathcal{O}_X \in\mathfrak{Sh}(Y)$ assigns $V \subseteq Y$ to $\mathcal{O}_X(f^{-1}(V))$. A locally ringed space $(X, \mathcal{O}_X)$ is ringed space such that for any $x \in X$, its stalk $\mathcal{O}_{X, x}$ is a local ring where $\mathcal{O}_{X, x}=\operatorname{colim}_{x \in U \in \mathfrak{Opens} X} \mathcal{O}_X(U)$; a morphism between two locally ringed spaces $(X, \mathcal{O}_X)$ and $(Y, \mathcal{O}_Y)$ is a morphism $(f, \phi)$ of ringed space such that for any $x\in X$ the ring homomorphism induced on stalk $\phi_x : \mathcal{O}_{Y, f(x)}\to \mathcal{O}_{X, x}$ is local.
+\end{definition}
+
+Following from the previous definitions, if $\mathcal{O}_X$ is a presheaf and $U\subseteq X$ is an open subset, then there is a presheaf $\mathcal{O}_X\!\mid_U$ on $U$ by assigning every open subset $V$ of $U$ to $\mathcal{O}_X(V)$, this is called restricting a presheaf; sheaves, ringed spaces and locally ringed spaces can also be similarly restricted.
+
+\subsection{Definition of Affine Scheme and Scheme}\label{sec:def_scheme}
+
+\paragraph*{Spec construction} Let $R$ be a ring and $\operatorname{Spec} R$ denote the set of prime ideals of $R$. Then for any subset $s \subseteq R$, its zero locus is defined as $\left\{\mathfrak{p} \mid s \subseteq \mathfrak{p}\right\}$. These zero loci can be considered as closed subsets of $\operatorname{Spec} R$, the topology thus formed is called the Zariski topology. Then a sheaf of rings on $\operatorname{Spec} R$ can be defined by assign $U \subseteq \operatorname{Spec} R$ to the ring
+\[
+\left\{s : \prod_{x \in U} R_x \mid s \text{~is locally a fraction}\right\},
+\]
+where $s$ is locally a fraction if and only if for any prime ideal $x \in U$, there is always an open subset $x \in V \subseteq U$ and $a, b \in R$ such that for any prime ideal $y \in V$, $b \not\in y$ and $s(y) = \frac{a}{b}$. This sheaf $\mathcal{O}$ is called the structure sheaf of $\operatorname{Spec}R$. $(\operatorname{Spec} R, \mathcal{O})$ is a locally ringed space because for any prime ideal $x\subseteq R$, $\mathcal{O}_{x}\cong A_x$ \cite{hartshorne1977graduate}.
+
+\paragraph*{Scheme}
+\begin{definition}[Scheme]
+    A locally ringed space $(X, \mathcal{O}_X)$ is said to be a scheme if for any $x \in X$, there is always some ring $R$ and some open subset $x \in U \subseteq X$ such that $(U, \mathcal{O}_X\!\mid_U) \cong (\operatorname{Spec} R, \mathcal{O}_{\operatorname{Spec} R})$ as locally ringed spaces. The category of schemes is the full subcategory of locally ringed spaces.
+\end{definition}
+
+\subsection{Proj Construction}\label{sec:proj_construction_maths}
+
+\section{Formalisation details}\label{sec:formalisation}
+
+
+\bibliography{ref}
+
+\end{document}

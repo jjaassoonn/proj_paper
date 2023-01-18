@@ -1,0 +1,55 @@
+This is BibTeX, Version 0.99d (TeX Live 2021)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: lipics-v2021-sample-article.aux
+The style file: plainurl.bst
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=200001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: ref.bib
+Warning--empty journal in mortbergtowards
+Warning--empty year in mortbergtowards
+Warning--there's a number but no series in neeman2007algebraic
+You've used 12 entries,
+            2882 wiz_defined-function locations,
+            694 strings with 6941 characters,
+and the built_in function-call counts, 5250 in all, are:
+= -- 548
+> -- 178
+< -- 4
++ -- 65
+- -- 52
+* -- 267
+:= -- 761
+add.period$ -- 40
+call.type$ -- 12
+change.case$ -- 59
+chr.to.int$ -- 0
+cite$ -- 15
+duplicate$ -- 157
+empty$ -- 502
+format.name$ -- 52
+if$ -- 1375
+int.to.chr$ -- 0
+int.to.str$ -- 12
+missing$ -- 12
+newline$ -- 64
+num.names$ -- 24
+pop$ -- 131
+preamble$ -- 1
+purify$ -- 50
+quote$ -- 0
+skip$ -- 375
+stack$ -- 0
+substring$ -- 215
+swap$ -- 41
+text.length$ -- 4
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 44
+warning$ -- 3
+while$ -- 38
+width$ -- 14
+write$ -- 135
+(There were 3 warnings)
