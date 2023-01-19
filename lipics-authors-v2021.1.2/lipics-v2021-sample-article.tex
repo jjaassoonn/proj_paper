@@ -51,7 +51,7 @@
 
 \funding{}
 
-% \acknowledgements{I want to thank \dots}%optional
+\acknowledgements{I want to thank Eric Wieser for his contribution and suggestion in formalising homogeneous ideal and homogeneous localisation; Andrew Yang and Junyan Xu for their review and suggestion of my often badly written code; Kevin Buzzard for suggesting this project and all the contributors to \textsf{mathlib} for otherwise this project would not have been possible.}
 
 \nolinenumbers %uncomment to disable line numbering
 
@@ -71,6 +71,9 @@
 
 \supplementdetails[subcategory={Source Code}]{Software}{https://github.com/leanprover-community/mathlib/pull/18138/commits/00c4b0918a2c7a8b62291581b0e1eddf2357b5be}
 
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{upquote}
 \usepackage{color}
 \definecolor{keywordcolor}{rgb}{0.7, 0.1, 0.1}   % red
 \definecolor{tacticcolor}{rgb}{0.0, 0.1, 0.6}    % blue
@@ -81,16 +84,18 @@
 
 \def\lstlanguagefiles{lstlean.tex}
 % set default language
-\lstset{language=lean}
+\lstset{language=lean, escapeinside={(*@}{@*)}, }
 
 \usepackage{tikz-cd}
+\usepackage{amscd}
+\usepackage[nice]{nicefrac}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-    Many object of interest in mathematics can be studied both analytically and algebraically, while at the same time, it is known that analytic geometry and algebraic geometry generally does not behave the same. However, the famous GAGA theorem asserts that for projective varieties, analytic and algebraic geometries are closely related; proof of the Fermat last theorem, for example, use this technique to transport between the two worlds \cite{serre1955geometrie}. I formalise $\operatorname{Proj}$ construction for any $\mathbb{N}$-graded $R$-algebra $A$ as a starting point to the GAGA theorem and projective $n$-space is constructed as $\operatorname{Proj} A[X_0,\dots, X_n]$. This would the first family of non-affine schemes formalised in any theorem prover.
+    Many object of interest in mathematics can be studied both analytically and algebraically, while at the same time, it is known that analytic geometry and algebraic geometry generally does not behave the same. However, the famous GAGA theorem asserts that for projective varieties, analytic and algebraic geometries are closely related; proof of the Fermat last theorem, for example, use this technique to transport between the two worlds \cite{serre1955geometrie}. A crucial step of proving GAGA is to calculate cohomology of projective spaces \cite{neeman2007algebraic,godement1958topologie}, thus I formalise $\operatorname{Proj}$ construction for any $\mathbb{N}$-graded $R$-algebra $A$ as a starting point to the GAGA theorem and projective $n$-space is constructed as $\operatorname{Proj} A[X_0,\dots, X_n]$. This would the first family of non-affine schemes formalised in any theorem prover.
 \end{abstract}
 
 \section{Introduction}
@@ -100,9 +105,9 @@ While one can define $\mathbb{P}_n$ over $\mathbb{C}$ without consideration of o
 
 In this paper I describe a formal construction of $\operatorname{Proj} A$ in the Lean3 \cite{de2015lean} theorem prover which closely follows \cite[Chapter~II]{hartshorne1977graduate}. The formal construction use various results from the Lean mathematical library \textsf{mathlib}, most notably the graded algebra and $\operatorname{Spec}$ construction; this project has been partly accepted into \textsf{mathlib} already while the remainder is still undergoing a review process. The code discussed in this paper can be found on GitHub\footnote{url: \texttt{https://github.com/leanprover-community/mathlib/pull/18138/}}.  I have freely used axiom of choice and law of excluded middle throughout the project since the rest of \textsf{mathlib} freely use classical reasoning as well; consequently, the final construction is not computable.
 
-As previously mentioned, $\operatorname{Proj}$ construction heavily depends on graded algebra and $\operatorname{Spec}$ construction. A detailed description for graded algebra in Lean  and \textsf{mathlib} as well as comparison with graded algebra in other theorem provers can be found in \cite{wieser2022graded}, for my purpose, I have chosen to use internal grading for any graded ring $A \cong \bigoplus \mathcal{A}_i$ so that the result of construction is about homogeneous prime ideals of $A$ directly instead of $\bigoplus_i \mathcal{A}_i$. The earliest $\operatorname{Spec}$ construction in Lean and any other theorem prover can be found in \cite{buzzard2022schemes} where the construction followed a ``sheaf-on-a-basis'' approach from \cite[\href{https://stacks.math.columbia.edu/tag/01HR}{Section 01HR}]{stacks-project}, however it differs significantly from the $\operatorname{Spec}$ construction currently found in \textsf{mathlib} where proofs from \cite[Chapter~II]{hartshorne1977graduate} were used; for this reason I have also chosen to follow the latter reference. Some other theorem provers also have or partially have $\operatorname{Spec}$ construction: in Isabelle/HOL, $\operatorname{Spec}$ is formalised by using locales and rewriting topology and ring theory part of existing library in \cite{doi:10.1080/10586458.2022.2062073}, however the category of scheme is yet to be formalized; an early formalisation of $\operatorname{Spec}$ in Coq can be found in \cite{chicli2001formalisation} and a definition of scheme in general can be found in its \texttt{UniMath} library; due to homotopy type theory, only a partial formalisation of $\operatorname{Spec}$ construction can be found in \cite{mortbergtowards}. Though some theorem provers have definition of a general scheme, I could not find any concrete construction of a scheme other that $\operatorname{Spec}$ of a ring\footnote{In this paper, all rings are assumed to be unital and commutative.}.
+As previously mentioned, $\operatorname{Proj}$ construction heavily depends on graded algebra and $\operatorname{Spec}$ construction. A detailed description for graded algebra in Lean  and \textsf{mathlib} as well as comparison with graded algebra in other theorem provers can be found in \cite{wieser2022graded}, for my purpose, I have chosen to use internal grading for any graded ring $A \cong \bigoplus \mathcal{A}_i$ so that the result of construction is about homogeneous prime ideals of $A$ directly instead of $\bigoplus_i \mathcal{A}_i$. The earliest $\operatorname{Spec}$ construction in Lean and any other theorem prover can be found in \cite{buzzard2022schemes} where the construction followed a ``sheaf-on-a-basis'' approach from \cite[\href{https://stacks.math.columbia.edu/tag/01HR}{Section 01HR}]{stacks-project}, however it differs significantly from the $\operatorname{Spec}$ construction currently found in \textsf{mathlib} where the construction follows \cite[Chapter~II]{hartshorne1977graduate} were used; for this reason, I have also chosen to follow the definition in \cite[Chapter~II]{hartshorne1977graduate} while hand-waving part (which is almost the whole proof) was made to be explicit. Some other theorem provers also have or partially have $\operatorname{Spec}$ construction: in Isabelle/HOL, $\operatorname{Spec}$ is formalised by using locales and rewriting topology and ring theory part of existing library in \cite{doi:10.1080/10586458.2022.2062073}, however the category of scheme is yet to be formalized; an early formalisation of $\operatorname{Spec}$ in Coq can be found in \cite{chicli2001formalisation} and a definition of scheme in general can be found in its \texttt{UniMath} library; due to homotopy type theory, only a partial formalisation of $\operatorname{Spec}$ construction can be found in \cite{mortbergtowards}. Though some theorem provers have definition of a general scheme, I could not find any concrete construction of a scheme other that $\operatorname{Spec}$ of a ring\footnote{In this paper, all rings are assumed to be unital and commutative.}.
 
-After explaining the mathematical details involved in $\operatorname{Proj}$ construction in Section~\ref{sec:maths}, Lean code will be provided and explained in Section~\ref{sec:formalisation}. For typographical reasons, some code of formalisation will be omitted and marked as \texttt{sorry}.
+After explaining the mathematical details involved in $\operatorname{Proj}$ construction in Section~\ref{sec:maths}, Lean code will be provided and explained in Section~\ref{sec:formalisation}. For typographical reasons, some code of formalisation will be omitted and marked as \texttt{sorry} or \texttt{\_} and some code presented in this paper is pseudocode that closely resembles the actual code but with, for example, notations and names altered to make it more readable and presentable.
 
 \section{Mathematical details}\label{sec:maths}
 In this section, familiarity of basic ring theory, topology and category theory will be assumed. In \Cref{sec:pre-def,sec:def_scheme}, definition of a scheme is explained in detail; $\operatorname{Spec}$ construction will also be briefly explained in order to fix the mathematical approach used in \textsf{mathlib}. Then by following definition of a scheme step by step, $\operatorname{Proj}$ construction will be explained in \Cref{sec:proj_construction_maths}.
@@ -187,7 +192,7 @@ Let $U\subseteq \operatorname{Proj}\mathcal{A}$ be an open subset, the sections 
 where $A^0_{\mathfrak{p}}$ denotes the homogeneous localization of $A$ at a homogeneous prime ideal $\mathfrak{p}$, i.e. the subring of $A_{\mathfrak{p}}$ of elements of degree zero and $s$ is said to be locally a homogeneous fraction if for any $x \in U$, there is some open subset $x\in V \subseteq U$, $i\in\mathbb{N}$ and $a, b\in\mathcal{A}_i$ such that for all $y\in V$, $s(y)=\frac{a}{b}$. Equipped with the natural restriction map, $\mathcal{O}$ defined in this way forms a presheaf; sheaf condition of $\mathcal{O}$ is checked in the category of sets where it follows from that being locally a homogeneous fraction is a local predicate and local predicates define subsheaves. This sheaf is called the structure sheaf of $\operatorname{Proj}\mathcal{A}$, also written as $\mathcal{O}_{\operatorname{Proj} A}$
 
 \paragraph*{Locally ringed space}
-\begin{theorem}
+\begin{theorem}\label{thm:proj_as_locally_ringed_space}
     The stalk of $(\operatorname{Proj}\mathcal{A}, \mathcal{O})$ at a homogeneous prime relevant ideal $\mathfrak{p}$ is isomorphic to $A^0_\mathfrak{p}$.
 \end{theorem}
 \begin{proof}
@@ -202,7 +207,7 @@ Since $A^0_{\mathfrak{p}}$ is a local ring for any homogeneous prime ideal $\mat
 
 \paragraph*{Affine cover}
 
-\begin{lemma}
+\begin{lemma}\label{lemma:choose_basic_open}
     For any $x\in \operatorname{Proj}\mathcal{A}$, there is some $0 < m \in \mathbb{N}$ and $f\in \mathcal{A}_m$, such that $x\in D(f)\stackrel{\mathsf{def}}{\iff}f\not\in x$.
 \end{lemma}
 \begin{proof}
@@ -212,10 +217,10 @@ Since $A^0_{\mathfrak{p}}$ is a local ring for any homogeneous prime ideal $\mat
 Thus, to construct an affine cover, it is sufficient to prove that for all $0<m\in \mathbb{N}$ and homogeneous element $f\in\mathcal{A}_m$, $(D(f),\mathcal{O}_{\operatorname{Proj}\mathcal{A}}\!\mid_{D(f)})\cong (\operatorname{Spec} A^0_f, \mathcal{O}_{\operatorname{Spec} A^0_f})$ where $A^0_f$ is the subring of the localised ring $A_f$ consisted of elements of degree zero. Now fix these notations, an isomorphism between locally ringed space can be constructed as a pair $(\phi, \alpha)$ where $\phi$ is a homeomorphism between topological space $D(f)\cong\operatorname{Spec}A^0_f $ and $\alpha$ an isomorphism between
 $\phi_*(\mathcal{O}_{\operatorname{Proj}\mathcal{A}}\!\mid_{D(f)})\cong \mathcal{O}_{\operatorname{Spec}A^0_f}$.
 
-\begin{theorem}
+\begin{theorem}\label{thm:homeomorph}
     $D(f)\cong \operatorname{Spec}A^0_f$ are homeomorphic as topological spaces.
 \end{theorem}
-The following proof is an expansion of \cite[II.2.5]{hartshorne1977graduate} while drawing ideas from \cite[II.4.5]{vakil24rising}.
+The following proofs are an expansion of \cite[II.2.5]{hartshorne1977graduate} while drawing ideas from \cite[II.4.5]{vakil24rising}.
 
 \begin{proof}
     Define $\phi: D(f) \to\operatorname{Spec}A^0_f$ by
@@ -224,14 +229,14 @@ The following proof is an expansion of \cite[II.2.5]{hartshorne1977graduate} whi
         \item $1\not\in\phi(\mathfrak{p})$: for otherwise
         $1 = \sum_i\frac{a_i}{f^{n_i}}\frac {g_i}1$,
         by multiplying a suitable power of $f$,
-        $\frac{f^N} 1 = \frac{\sum_i a_i g_i f^{k_i}}1$ for some $N$; by definition of localisation,  $f^M f^N=f^M \sum_i a_i g_i f^{k_i}$ for some $M$, since the right handside is in $\mathfrak p$, the left handside is in $\mathfrak p$ too, implying $f\in\mathfrak p$. Contradiction.
+        $\frac{f^N} 1 = \frac{\sum_i a_i g_i f^{k_i}}1$ for some $N$; by definition of localisation,  $f^M f^N=f^M \sum_i a_i g_i f^{k_i}$ for some $M$, since the right hand side is in $\mathfrak p$, the left hand side is in $\mathfrak p$ too, implying $f\in\mathfrak p$. Contradiction.
         \item If $x_1 x_2\in =\phi(\mathfrak p)$, then either $x_1\in\phi(\mathfrak p)$ or $x_2 \in \phi(\mathfrak p)$: write $x_1=\frac{a_1}{f^{n_1}}$ and $x_2=\frac{a_2}{f^{n_2}}$, then $\frac{a_1a_2}{f^{n_1+n_2}}\in\mathrm{span}\left\{\frac g1|g \in \mathfrak p\right\}$, so write
         $\frac{a_1a_2}{f^{n_1+n_2}}=\sum_i \frac{c_i}{f^{n_i}}\frac{g_i}1$,
         by multiplying a suitable power of $f$, we get
         $
         \frac{a_1a_2f^N}1=\frac{\sum_i c_ig_if^{k_i}}1
         $ for some $N$, then by definition of localisation, $a_1a_2f^N f^M=f^M\sum_i c_ig_if^{k_i}$ for some $M$, since right handside is in $\mathfrak p$ and $f\not\in\mathfrak p$, either $a_1\in\mathfrak p$ or $a_2\in\mathfrak p$.
-        \item $\phi$ is continuous: since $\mathrm{Spec}A^0_f$ also has a topological basis of basic open sets, it suffices to check preimage of basic open sets. Take $\frac{a}{f^n}\in A^0_f$, then $\phi^{-1}\left(D\left(\frac a{f^n}\right)\right)=D(f)\cap D(a)$. 
+        \item $\phi$ is continuous: since $\mathrm{Spec}A^0_f$ also has a topological basis of basic open sets, it suffices to check that preimages of basic open sets are open. Take $\frac{a}{f^n}\in A^0_f$, then $\phi^{-1}\left(D\left(\frac a{f^n}\right)\right)=D(f)\cap D(a)$. 
         \begin{itemize}
             \item $D(f)\cap D(a)\subseteq \phi^{-1}\left(D\left(\frac a{f^n}\right)\right)$ because if $y\in D(f)\cap D(a)$ and $\frac a{f^n}\in \phi(y)$, i.e.
             $
@@ -249,15 +254,14 @@ The following proof is an expansion of \cite[II.2.5]{hartshorne1977graduate} whi
         \item $0\in \psi(x)$ for obvious reason.
         \item if $a,b\in \psi(x)$, then $a + b\in \psi(x)$: since $x$ is prime, it is sufficient to show
             $\left(\frac{(a_i+b_i)^m}{f^i}\right)^2 = \sum_{j=0}^{2m}{2m\choose j}\frac{a_i^j b_i^{2m-j}}{f^{2i}}\in x$.
-
-        if $m\le j$, we write
-        $$
-        \frac{a_i^j b_i^{2m-j}}{f^{2i}} = \boxed{\frac{a_i^m}{f^i}}\frac{a_i^{j-m}b_i^{2m-j}}{f^i};
-        $$
-        otherwise, we write
-        $$
+        if $m\le j$, write
+        $
+        \frac{a_i^j b_i^{2m-j}}{f^{2i}} = \boxed{\frac{a_i^m}{f^i}}\frac{a_i^{j-m}b_i^{2m-j}}{f^i},
+        $
+        otherwise, write
+        $
         \frac{a_i^j b_i^{2m-j}}{f^{2i}} =\boxed{\frac{b_i^m}{f^i}}\frac{a_i^jb_i^{m-j}}{f^i}.
-        $$
+        $
         By assumption, the boxed parts are both in $x$, thus $\left(\frac{(a_i+b_i)^m}{f^i}\right)^2$ is also in $x$.
         \item if $a, b \in A$ and $b\in \psi(x)$, then $ab\in \psi(x)$: inducting on $a$, one obtain that
         \begin{itemize}
@@ -290,8 +294,425 @@ The following proof is an expansion of \cite[II.2.5]{hartshorne1977graduate} whi
     Thus we have proven that $\phi: D(f)\cong \mathrm{Spec} A^0_f$ as topological spaces.
 \end{proof}
 
+Let $\phi$ and $\psi$ be the continuous functions defined in the previous proof, $U$ be an open subset of $\operatorname{Spec}A^0_f$, $s$ be a section on $\phi^{-1}(U)$ and $x \in U$, then $\psi(x)\in \phi^{-1}(U)$, hence $s(\psi(x))=\frac n d\in A^0_{\psi(x)}$ for some $i\in\mathbb{N}$ and $n, d \in \mathcal{A}_i$. Keeping the same notation, a ring homomorphism $\alpha_U:\phi_*(\mathcal O_{\mathrm{Proj}}\!\mid_{D(f)})(U)\to \mathcal O_{\mathrm{Spec}A^0_f}(U)$ can be defined as $s\mapsto \left(x\mapsto \frac{\nicefrac{nd^{m-1}}{f^i}}{\nicefrac{d^m}{f^i}}\right)$ where $n, d\in\mathcal{A}_i$.  Assuming that $\alpha$ is indeed a ring homomorphism, it is easy to check that the following diagram commutes whenever $V\subseteq U$:
+$$
+\begin{CD} 
+    \mathcal O_{\mathrm{Proj}\mid_{D(f)}}(h^{-1}(U)) @>{\phi_U}>> \mathcal O_{\mathrm{Spec}A^0_f}(U) \\
+    @VVV                                                           @VVV                              \\
+    \mathcal O_{\mathrm{Proj}\mid_{D(f)}}(h^{-1}(V)) @>{\phi_V}>> \mathcal O_{\mathrm{Spec}A^0_f}(V)
+\end{CD}.
+$$
+\begin{lemma}\label{thm:def-alpha}
+    For any open subset $U\subseteq \operatorname{Spec}A^0_f$, $\alpha_U$ is well-defined; hence $\alpha$ defines a morphism of sheaves.
+\end{lemma}
+\begin{proof}
+    It is clear that both the numerator and denominator have degrees zero. $\nicefrac{d^m}{f^i}\not\in x$ follows from $d\not\in\psi(x)$. 
+    \begin{itemize}
+        \item $\alpha_U$ preserves one: let $x\in U$, suppose $1=\alpha_U(1)(x)=\frac n d$ where $n,d\in A_i$, by definition of localisation, for some $c\not\in \psi(1)$, $nc=dc$. Since $c\not\in \psi(1)$, there is some $j\in\mathbb N$, $\frac{c_j^m}{f^j}\not\in x$. Then $(nc)_{i+j}=(dc)_{i+j}=nc_j=dc_j$. Hence
+        $$
+        \frac{c_j^m}{f^j}\frac{nd^{m-1}}{f^i}=\frac{c_j^mnd^{m-1}}{f^{i+j}}=\frac{(dc_j)^m}{f^{i+j}}=\frac{c_j^m}{f^j}\frac{d^m}{f^i},
+        $$
+        i.e. $\alpha_U(1)(x)=1$ for all $x$. Similarly, $\alpha_U$ preserves zero as well.
+        \item $\alpha_U$ preserves addition: let $s_1, s_2$ be two sections and $x\in U$, write $s_1(\psi(x))=\frac{n_1}{d_1}$ with $n_1,d_1\in A_{i_1}$, $s_2(\psi(x))=\frac{n_2}{d_2}$ with $n_2, d_2\in A_{i_2}$ and $(s_1+s_2)(\psi(x))=\frac{n_{12}}{d_{12}}=\frac{n_1}{d_1}+\frac{n_2}{d_2}$ with $n_{12}, d_{12}\in A_{i_{12}}$. Thus it is sufficient to check
+        $$
+        \frac{\nicefrac{n_{12}d_{12}^{m-1}}{f^{i_{12}}}}{\nicefrac{d_{12}^m}{f^{i_{12}}}}=\frac{\nicefrac{n_1d_1^{m-1}}{f^{i_1}}}{\nicefrac{d_1^m}{f^{i_1}}} + \frac{\nicefrac{n_2d_2^{m-1}}{f^{i_2}}}{\nicefrac{d_2^m}{f^{i_2}}}.
+        $$
+        
+        From $\frac{n_{12}}{d_{12}}=\frac{n_1}{d_1}+\frac{n_2}{d_2}=\frac{n_1d_2+n_2d_1}{d_1d_2}$, so we can find a $c\not\in \psi(x)$, such that 
+        $$
+        n_{12}d_1d_2c=(n_1d_2+n_2d_1)d_{12}c.
+        $$
+        Since $c\not\in \psi(x)$, there is some $j\in\mathbb N$ such that $\frac{c_j^m}{f^j}\not\in x$. Then by taking the $i_1+i_2+i_{12}+j$-th projection $n_{12}d_1d_2c_j=(n_1d_2+n_2d_1)d_{12}c_j$, implying the desired equality by multiplying $\nicefrac{c_j^m}{f^j}$. Using this, one can check that by multiplying $\frac{c_j^m}{f^j}$, the desired equality can be proved. Similarly, $\alpha_U(s_1s_2)(x)=\alpha_U(s_1)(x)\alpha_U(s_2)(x)$.
+    \end{itemize}
+    Hence, $\alpha_U$ is indeed a ring homomorphism, all that is left to check is that $\alpha_U(s)$ is locally a fraction. Since $s$ is locally quotient, for any $x\in U$, there is some open set $V\subseteq \mathrm{Proj}\mathcal{A}$ such that $\psi(x)\in V\subseteq \phi^{-1}(U)$ such that $s(y)=\frac a b$ for all $y\in V$ where $a,b\in A_n$ and $b\not\in y$, then to check $\alpha_U(s)$ is locally quotient, use the open subset $\phi(V)$ and check that for all $z\in \phi(V)$, $\alpha_U(s)(z)=\frac{ab^{m-1}}{b^m}$.
+\end{proof}
+
+In the other direction, if $s\in \mathcal O_{\mathrm{Spec}A^0_f}(U)$ and $y\in \phi^{-1}(U)$, then $\phi(y)\in U$, so $s(\phi(y))$ can be written as $\frac{a}{b}$ where $a,b\in A^0_f$; then $a$ can be written as $\frac{n_a}{f^{i_a}}$ for some $n_a\in A_{mi_a}$ and $b$ as $\frac{n_b}{f^{i_b}}$ for some $n_b\in A_{mi_b}$. Hence, a ring homomorphism $\beta_U: \mathcal O_{\mathrm{Spec}A^0_f}(U)\to \mathcal O_{\mathrm{Proj}}\!\mid_{D(f)}(\phi^{-1}(U))$ can be defined as $s\mapsto \left(y \mapsto \frac{n_af^i_b}{n_bf^{i_a}}\right)$. Assuming $\beta$ is well defined, it is easy to check that the assignment $U\mapsto \beta_U$ is natural so that $\beta$ is a natural transformation.
+
+\begin{lemma}\label{thm:def-beta}
+    For any open subset $U\subseteq \operatorname{Spec}A^0_f$, $\beta_U$ is well-defined; hence $\beta$ defines a morphism of sheaves.
+\end{lemma}
+\begin{proof}
+    Since $s$ locally is a fraction, there are open sets $\phi(y)\in V\subseteq U$, such that for all $z\in V$, $s(z)$ is $\frac{\nicefrac{a}{f^{l_1}}}{\nicefrac{b}{f^{l_2}}}$. Then on $\phi^{-1}(V)\subseteq \phi^{-1}(U)$, $\psi_U(s)(y)$ is always $\frac{af^{l_2}}{bf^{l_1}}$. Then it is sufficient to check that $\beta_U$ is a ring homomorphism:
+    \begin{itemize}
+        \item $\beta_U$ preserves one. Suppose $\frac11=1(\phi(y))=\frac a b$ where $a,b\in A^0_f$, then by definition of localisation, there is some $\frac c{f^l}\not\in \phi(y)$ such that $$\frac {n_ac}{f^{i_a+l}}=\frac {n_bc}{f^{i_b+l}};$$ by definition of localisation again, there is some $n_1\in\mathbb N$ such that $$n_acf^{i_b+l+n_1}=n_bcf^{i_a+l+n_1}.$$ Hence $\beta_U(1)(y)=\frac{n_af^{b_i}}{n_bf^{i_a}}=1$.
+        Similarly, $\beta_U$ preserves zero as well. 
+        \item $\beta_U$ preserves multiplication, let $s_1, s_2$ be two sections and $y\in\phi^{-1}(U)$, by writing 
+        $s_1(\phi(y))$ as $\frac{\nicefrac{a_1}{f^{i_1}}}{\nicefrac{b_1}{f^{j_1}}}$, $s_2(\phi(y))$ as $\frac{\nicefrac{a_2}{f^{i_2}}}{\nicefrac{b_2}{f^{i_2}}}$ and $(s_1s_2)(\phi(y))=\frac{\nicefrac{a_{12}}{f^{i_{12}}}}{\nicefrac{b_{12}}{f^{j_{12}}}}$, one deduces that $\frac{\nicefrac{a_1a_2}{f^{i_1+i_2}}}{\nicefrac{b_1b_2}{f^{j_1+j_2}}}=\frac{\nicefrac{a_{12}}{f^{i_{12}}}}{\nicefrac{b_{12}}{f^{j_{12}}}}$, by definition of localisation, it implies that, there is some $\frac{c}{f^l}$ such that $$\frac{a_1a_2b_{12}c}{f^{i_1+i_2+j_{12}+l}}=\frac{a_{12}b_1b_2c}{f^{i_{12}+j_1+j_2+l}}.$$ Hence, there is some $L\in\mathbb N$, such that 
+        $$a_1a_2b_{12}cf^{i_{12}+j_1+j_2+l+L}=a_{12}b_1b_2cf^{i_1+i_2+j_{12}+l+L},$$ implying that
+        $$
+        \frac{a_{12}f^{j_{12}}}{b_{12}f^{i_{12}}}=\frac{a_1f^{j_1}}{b_1f^{i_1}}\cdot\frac{a_2f^{j_2}}{b_2f^{i_2}}.
+        $$ Similarly, $\beta_U$ preserves addition as well. 
+    \end{itemize}
+\end{proof}
+
+\begin{theorem}\label{thm:iso-sheaf}
+    $\phi_*(\mathcal{O}_{\operatorname{Proj}\mathcal{A}}\!\mid_{D(f)})$ and $\mathcal{O}_{\operatorname{Spec}A^0_f}$ are isomorphic as sheaves.
+\end{theorem}
+\begin{proof}
+    By combining \Cref{thm:def-alpha} and \Cref{thm:def-beta}, it is sufficient to check $\alpha \circ \beta$ and $\beta \circ \alpha$ are both identities. 
+    \begin{itemize}
+        \item $\beta\circ\alpha=1$: let $s\in\mathcal O_{\mathrm{Proj}}\!\mid_{D(f)}(\phi^{-1}(U))$, then for $x\in \phi^{-1}(U)$
+        $$
+        \alpha_U(s)=x\mapsto \frac{\nicefrac{nd^{m-1}}{f^i}}{\nicefrac{d^m}{f^i}},
+        $$
+        where $s(x)=\frac n d$.
+        Thus, by definition
+        $$
+        \beta_U(\alpha_U(s))(x)=\frac{nd^{m-1}f^i}{d^mf^i}=\frac n d=s(x).
+        $$
+        \item $\alpha\circ\beta=1$: let $s\in\mathcal O_{\mathrm{Spec}A^0_f}(U)$, then for $x\in U$
+        $$
+        \beta_U(s)=x\mapsto \frac{n_af^{i_b}}{n_bf^{i_a}}
+        $$
+        where 
+        $s(x)=\frac{\nicefrac{n_a}{f^{i_a}}}{\nicefrac{n_b}{f^{i_b}}}.$ Thus
+        $$
+        \phi_U(\psi_U(s))(x)=\frac{\nicefrac{n_af^{i_b}\left(n_bf^{i_a}\right)^{m-1}}{f^{j}}}{\nicefrac{\left(n_bf^{i_a}\right)^m}{f^{j}}}=\frac{\nicefrac{n_a}{f^{i_a}}}{\nicefrac{n_b}{f^{i_b}}}=s(x).
+        $$
+    \end{itemize}
+\end{proof}
+
+\begin{corollary}\label{thm:proj-scheme}
+    $(\operatorname{Proj}\mathcal{A}, \mathcal{O}_{\operatorname{Proj}\mathcal{A}})$ is a scheme.
+\end{corollary}
+
 \section{Formalisation details}\label{sec:formalisation}
 
+\subsection{Homogeneous Ideal}
+Let $A$ be an $R$-algebra and an $\iota$-grading $\mathcal{A} : \iota\to R\text{-submodules of~} A$ \cite{wieser2022graded}, \lstinline{ideal.is_homogeneous} is the proposition of an ideal being homogeneous and \lstinline{homogeneous_ideal} is the type of all homogeneous ideals of $A$. Note that, by this implementation, homogeneous ideals are not literally ideals, for this reason, $\operatorname{Proj} \mathcal{A}$ cannot be implemented as a subset of $\operatorname{Spec} A$.
+\begin{lstlisting}
+def ideal.is_homogeneous : Prop :=
+∀ (i : ι) ⦃r : A⦄, r ∈ I → (direct_sum.decompose 𝒜 r i : A) ∈ I
+
+structure homogeneous_ideal extends submodule A A :=
+(is_homogeneous' : ideal.is_homogeneous 𝒜 to_submodule)
+
+def homogeneous_ideal.to_ideal (I : homogeneous_ideal 𝒜) : ideal A := I.to_submodule
+
+lemma homogeneous_ideal.is_homogeneous (I : homogeneous_ideal 𝒜) :
+  I.to_ideal.is_homogeneous 𝒜 := I.is_homogeneous'
+
+def homogeneous_ideal.irrelevant : homogeneous_ideal 𝒜 :=
+⟨(graded_ring.proj_zero_ring_hom 𝒜).ker, sorry⟩
+\end{lstlisting}
+
+\subsection{Homogeneous Localisation}
+If $x$ is a multiplicatively closed subset, then the homogeneous localisation of $A$ at $x$ is defined to be the subring of localised ring $A_x$ consisting of elements of degree zero. This ring is implemented as triples $\{(i, a, b) : \iota\times \mathcal{A}_i\times \mathcal{A}_i\mid b\not\in x\}$ under the equivalence relation that $(i_1, a_1, b_1)\approx(i_2, a_2, b_2)\stackrel{\mathsf{def}}{\iff}\frac {a_1}{b_1} = \frac{a_2}{b_2}$ in $A_x$. This approach gives an induction principle, though the construction still uses classical reasoning, many lemmas will be automatic because of rich APIs in \textsf{mathlib} about quotient spaces already; compared to the subring approach, one would need to write corresponding lemmas manually by excessively invoking \lstinline{classical.some} and \lstinline{classical.some_spec}.
+
+\begin{lstlisting}
+variables {ι R A: Type*} [add_comm_monoid ι] [decidable_eq ι]
+variables [comm_ring R] [comm_ring A] [algebra R A]
+variables (𝒜 : ι → submodule R A) [graded_algebra 𝒜]
+variables (x : submonoid A)
+
+structure num_denom_same_deg :=
+(deg : ι) (num denom : 𝒜 deg) (denom_mem : (denom : A) ∈ x)
+
+def embedding (p : num_denom_same_deg 𝒜 x) : localization x :=
+localization.mk p.num ⟨p.denom, p.denom_mem⟩
+
+def homogeneous_localization : Type* :=
+quotient (setoid.ker $ embedding 𝒜 x)
+\end{lstlisting}
+
+Then if \lstinline{(y : homogeneous_localization 𝒜 x)}, its value, degree, numerator and denominator can all be defined by using induction/recursion principles for quotient spaces:
+\begin{lstlisting}
+variable (y : homogeneous_localization 𝒜 x)
+ 
+def val : localization x :=
+  quotient.lift_on' y (num_denom_same_deg.embedding 𝒜 x) $ λ _ _, id
+
+def num : A := (quotient.out' y).num
+def denom : A := (quotient.out' y).denom
+def deg : ι := (quotient.out' y).deg
+
+lemma denom_mem : y.denom ∈ x := (quotient.out' y).denom_mem
+lemma num_mem_deg : y.num ∈ 𝒜 f.deg := (quotient.out' y).num.2
+lemma denom_mem_deg : y.denom ∈ 𝒜 y.deg := (quotient.out' y).denom.2
+lemma eq_num_div_denom :
+ y.val = localization.mk y.num ⟨y.denom, y.denom_mem⟩ := sorry
+\end{lstlisting}
+
+\subsection{Zariski Topology}
+In this section $A$ will be graded by $\mathbb{N}$. $\operatorname{Proj}\mathcal{A}$ is formalised a structure:
+
+\begin{lstlisting}
+structure projective_spectrum :=
+(as_homogeneous_ideal : homogeneous_ideal 𝒜)
+(is_prime : as_homogeneous_ideal.to_ideal.is_prime)
+(not_irrelevant_le : ¬(homogeneous_ideal.irrelevant 𝒜 ≤ as_homogeneous_ideal))
+\end{lstlisting}
+
+After building more APIs around \lstinline{projective_spectrum}, Zariski topology with a basis of basic open sets can be formalised as:
+\begin{lstlisting}
+def zero_locus (s : set A) : set (projective_spectrum 𝒜) :=
+{x | s ⊆ x.as_homogeneous_ideal}
+
+instance zariski_topology : topological_space (projective_spectrum 𝒜) :=
+topological_space.of_closed (set.range (zero_locus 𝒜)) sorry sorry sorry
+
+def basic_open (r : A) : topological_space.opens (projective_spectrum 𝒜) :=
+{ val := { x | r ∉ x.as_homogeneous_ideal }, 
+  property := ⟨{r}, set.ext $ λ x, set.singleton_subset_iff.trans $ not_not.symm⟩ }
+
+lemma is_topological_basis_basic_opens : topological_space.is_topological_basis
+  (set.range (λ (r : A), (basic_open 𝒜 r : set (projective_spectrum 𝒜)))) := 
+sorry
+\end{lstlisting}
+
+\subsection{Locally Ringed Space}
+\textsf{mathlib} provides \lstinline{Top.presheaf.is_sheaf_iff_is_sheaf_comp} to check sheaf condition by composing a forgetful functor and \lstinline{Top.subsheaf_to_Types} to construct subsheaf of types satisfying a local predicate \cite{docsmathlib}; $\mathcal{O}_{\operatorname{Spec}}$ in \textsf{mathlib} adopted this approach \cite{mathlibrepo}, and structure sheaf of $\operatorname{Proj}$ will also be constructed in this way. \lstinline{is_locally_fraction} is a local predicate expressing ``being locally a homogeneous fraction'' in \Cref{sec:proj_construction_maths}:
+
+\begin{lstlisting}
+def is_fraction_prelocal : prelocal_predicate (λ (x : Proj 𝒜), (*@ $\mathtt A^0_{\mathtt{x}}$ @*)) :=
+{ pred := λ U f, is_fraction f,
+  res := by rintros V U i f ⟨j, r, s, w⟩; exact ⟨j, r, s, λ y, w (i y)⟩ }
+
+def is_locally_fraction : local_predicate (λ (x : Proj 𝒜), (*@ $\mathtt A^0_{\mathtt{x}}$ @*)) :=
+(is_fraction_prelocal 𝒜).sheafify
+
+def structure_sheaf_in_Type : sheaf Type* (Proj 𝒜):=
+subsheaf_to_Types (is_locally_fraction 𝒜)
+\end{lstlisting}
+
+The presheaf of rings is also defined as \lstinline{structure_presheaf_in_CommRing} and checked that composition with forgetful functor is naturally isomorphic to the (underlying presheaf) of \lstinline{structure_sheaf_in_Type} which implies that \lstinline{structure_presheaf_in_CommRing} satisfies the sheaf condition as well by using \lstinline{Top.presheaf.is_sheaf_iff_is_sheaf_comp}.
+\begin{lstlisting}
+def structure_presheaf_in_CommRing : presheaf CommRing (Proj 𝒜) :=
+{ obj := λ U, CommRing.of ((structure_sheaf_in_Type 𝒜).1.obj U), ..sorry }
+
+def structure_presheaf_comp_forget :
+  structure_presheaf_in_CommRing 𝒜 ⋙ (forget CommRing) ≅ 
+  (structure_sheaf_in_Type 𝒜).1 := sorry
+
+def Proj.structure_sheaf : sheaf CommRing (Proj 𝒜) :=
+⟨structure_presheaf_in_CommRing 𝒜,
+  (is_sheaf_iff_is_sheaf_comp _ _).mpr
+    (is_sheaf_of_iso (structure_presheaf_comp_forget 𝒜).symm (structure_sheaf_in_Type 𝒜).cond)⟩
+\end{lstlisting}
+Then following \Cref{thm:proj_as_locally_ringed_space}, \lstinline{stalk_to_fiber_ring_hom} is a family of ring homomorphism $\prod_x \mathcal{O}_{\operatorname{Proj}\mathcal A, x}\to A^0_x$ obtained by universal property of colimit with its right inverse as a family of function \lstinline{homogeneous_localization_to_stalk}:
+
+\begin{lstlisting}
+def stalk_to_fiber_ring_hom (x : Proj 𝒜) :
+  (Proj.structure_sheaf 𝒜).presheaf.stalk x ⟶ CommRing.of (*@ $\mathtt A^0_{\mathtt{x}}$ @*) :=
+limits.colimit.desc (((open_nhds.inclusion x).op) ⋙ (Proj.structure_sheaf 𝒜).1) 
+  sorry
+
+def section_in_basic_open (x : Proj 𝒜) :
+  Π (f : (*@ $\mathtt A^0_{\mathtt{x}}$ @*)),
+    (Proj.structure_sheaf 𝒜).1.obj (op (Proj.basic_open 𝒜 f.denom)) :=
+λ f, ⟨λ y, quotient.mk' ⟨_, ⟨f.num, _⟩, ⟨f.denom,_⟩, _⟩, _⟩
+
+def homogeneous_localization_to_stalk (x : Proj 𝒜) :
+  (*@ $\mathtt A^0_{\mathtt{x}}$ @*) → (Proj.structure_sheaf 𝒜).presheaf.stalk x :=
+λ f, (Proj.structure_sheaf 𝒜).presheaf.germ
+  (⟨x, homogeneous_localization.mem_basic_open _ x f⟩ : Proj.basic_open _ f.denom)
+  (section_in_basic_open _ x f)
+
+def Proj.stalk_iso' (x : Proj 𝒜) :
+  (Proj.structure_sheaf 𝒜).presheaf.stalk x ≃+* CommRing.of (*@ $\mathtt A^0_{\mathtt{x}}$ @*) :=
+ring_equiv.of_bijective (stalk_to_fiber_ring_hom _ x)
+  ⟨sorry, function.surjective_iff_has_right_inverse.mpr 
+    ⟨homogeneous_localization_to_stalk 𝒜 x, sorry⟩⟩
+\end{lstlisting}
+Hence establishing that $\operatorname{Proj}\mathcal{A}$ is a locally ringed space:
+\begin{lstlisting}
+def Proj.to_LocallyRingedSpace : LocallyRingedSpace :=
+{ local_ring := λ x, @@ring_equiv.local_ring _
+    (show local_ring (*@ $\mathtt A^0_{\mathtt{x}}$ @*), from infer_instance) _
+    (Proj.stalk_iso' 𝒜 x).symm,
+    ..(Proj.to_SheafedSpace 𝒜) }
+\end{lstlisting}
+
+\subsection{Affine cover}
+\begin{lstlisting}
+variables {f : A} {m : ℕ} (f_deg : f ∈ 𝒜 m) (x : Proj| D(f))
+\end{lstlisting}
+\lstinline{Spec.T} and \lstinline{Proj.T} denotes the topological space associated with each locally ringed spaces. Let $0 < m \in \mathbb N$ and $f\in\mathcal A_m$ and $x \in D(f)$, by following \Cref{thm:homeomorph}, the continuous function $\phi$ and $\psi$ in \Cref{sec:proj_construction_maths} is formalised as \lstinline{Proj_iso_Spec_Top_component.to_Spec} and \lstinline{Proj_iso_Spec_Top_component.from_Spec} respectively; $\phi\circ\psi = 1$ and $\psi\circ\phi = 1$ are recorded as \lstinline{Proj_iso_Spec_Top_component.to_Spec_from_Spec} and \lstinline{.from_Spec_to_Spec} respectively:
+
+\begin{lstlisting}
+namespace Proj_iso_Spec_Top_component
+namespace to_Spec
+def carrier : ideal (*@$\mathtt A^0_{\mathtt{f}}$@*) :=
+ideal.comap (algebra_map (*@$\mathtt A^0_{\mathtt{f}}$@*) (*@$\mathtt A_{\mathtt{f}}$@*))
+  (ideal.span $ algebra_map A (away f) '' x.val.as_homogeneous_ideal)
+
+def to_fun : Proj.T| D(f) → Spec.T (*@$\mathtt A^0_{\mathtt{f}}$@*) :=
+λ x,
+⟨carrier 𝒜 x, sorry /-a proof for primeness-/⟩
+end to_Spec
+
+def to_Spec (f : A) : Proj.T| D(f) ⟶ Spec.T (*@$\mathtt A_{\mathtt{f}}$@*) :=
+{ to_fun := to_Spec.to_fun 𝒜 f,
+  continuous_to_fun := begin
+    apply is_topological_basis.continuous (Spec.is_topological_basis_basic_opens),
+    sorry
+  end }
+
+namespace from_Spec
+def carrier (q : Spec.T (*@$\mathtt A^0_\mathtt f$@*)) : set A :=
+{a | ∀ i, (quotient.mk' ⟨_, ⟨proj 𝒜 i a ^ m, _⟩, ⟨f^i, _⟩, _⟩ : (*@$\mathtt A^0_\mathtt f$@*)) ∈ q.1}
+
+def carrier.as_ideal : ideal A := { carrier := carrier f_deg q, ..sorry }
+def carrier.as_homogeneous_ideal : homogeneous_ideal 𝒜 := 
+⟨carrier.as_ideal f_deg hm q, sorry⟩
+lemma carrier.relevant :
+  ¬homogeneous_ideal.irrelevant 𝒜 ≤ carrier.as_homogeneous_ideal f_deg hm q := 
+sorry
+lemma carrier.as_ideal.prime : (carrier.as_ideal f_deg hm q).is_prime :=
+(carrier.as_ideal.homogeneous f_deg hm q).is_prime_of_homogeneous_mem_or_mem 
+    sorry sorry
+
+def to_fun : Spec.T (*@$\mathtt A^0_\mathtt f$@*) → Proj.T| D(f) :=
+λ q, ⟨⟨carrier.as_homogeneous_ideal f_deg hm q, carrier.as_ideal.prime f_deg hm q,
+      carrier.relevant f_deg hm q⟩, sorry⟩ 
+end from_Spec
+
+lemma to_Spec_from_Spec : to_Spec.to_fun 𝒜 f (from_Spec.to_fun f_deg hm x) = x := 
+sorry
+lemma from_Spec_to_Spec : from_Spec.to_fun f_deg hm (to_Spec.to_fun 𝒜 f x) = x :=
+sorry
+
+def from_Spec : Spec.T (*@$\mathtt A^0_{\mathtt f}$@*) ⟶ Proj.T| D(f) :=
+{ to_fun := from_Spec.to_fun f_deg hm,
+  continuous_to_fun := begin
+    apply is_topological_basis.continuous,
+    sorry
+  end }
+end Proj_iso_Spec_Top_component
+
+def Proj_iso_Spec_Top_component:
+  Proj.T| D(f) ≅ Spec.T ((*@$\mathtt A^0_{\mathtt f}$@*)) :=
+{ hom := Proj_iso_Spec_Top_component.to_Spec 𝒜 f,
+  inv := Proj_iso_Spec_Top_component.from_Spec hm f_deg, ..
+  sorry /-composition being identity-/ }
+\end{lstlisting}
+Then by following \Cref{thm:def-beta}, $\beta$ is formalised as \lstinline{Proj_iso_Spec_Sheaf_component.from_Spec}:
+\begin{lstlisting}
+namespace Proj_iso_Spec_Sheaf_component
+namespace from_Spec
+variables (V : (opens (Spec (*@$\mathtt A^0_{\mathtt f}$@*)))ᵒᵖ)
+variables (s : (Spec (*@$\mathtt A^0_{\mathtt f}$@*)).presheaf.obj V)
+variables (y : ((@opens.open_embedding Proj.T D(f)).is_open_map.functor.op.obj
+  ((opens.map (Proj_iso_Spec_Top_component hm f_deg).hom).op.obj V)).unop)
+-- For type checking purpose, but basically a verbose way of spelling 
+-- y is in (*@$\mathtt{\phi}^{-1}(\mathtt V)$@*)
+
+-- (*@Corresponding to evaluating a section in \Cref{thm:def-beta}.@*)
+def data : structure_sheaf.localizations (*@$\mathtt A^0_{\mathtt f}$@*)))
+  ((Proj_iso_Spec_Top_component hm f_deg).hom ⟨y.1, _⟩) :=
+s.1 ⟨_, _⟩
+
+-- (*@$s(\phi(y))=\frac a b$, this is $a$, see \Cref{thm:def-beta}.@*)
+def data.num : (*@$\mathtt A^0_{\mathtt f}$@*) := sorry
+
+-- (*@$s(\phi(y))=\frac a b$, this is $b$, see \Cref{thm:def-beta}@*)
+def data.denom : (*@$\mathtt A^0_{\mathtt f}$@*) := sorry
+
+-- (*@$s\mapsto \left(y \mapsto \nicefrac{n_af^i_b}{n_bf^{i_a}}\right)$, this is $n_af^i_b$,  see \Cref{thm:def-beta}.@*)
+def num : A :=
+  (data.num _ hm f_deg s y).num * (data.denom _ hm f_deg s y).denom
+end Proj_iso_Spec_Sheaf_component
+
+-- (*@$s\mapsto \left(y \mapsto \nicefrac{n_af^i_b}{n_bf^{i_a}}\right)$, this is $n_bf^{i_a}$,  see \Cref{thm:def-beta}.@*)
+def denom : A :=
+  (data.denom _ hm f_deg s y).num * (data.num _ hm f_deg s y).denom
+
+-- (*@$s\mapsto \left(y \mapsto \nicefrac{n_af^i_b}{n_bf^{i_a}}\right)$, this is $\nicefrac{n_af^i_b}{n_bf^{i_a}}$,  see \Cref{thm:def-beta}.@*)
+def bmk : (*@$\mathtt A^0_{\mathtt y}$@*) :=
+quotient.mk'
+{ deg := (data.num _ hm f_deg s y).deg + (data.denom _ hm f_deg s y).deg,
+  num := ⟨num hm f_deg s y, _⟩,
+  denom := ⟨denom hm f_deg s y, _⟩,
+  denom_mem := denom_not_mem hm f_deg s y }
+
+def to_fun.aux : ((Proj_iso_Spec_Top_component hm f_deg).hom _* (Proj| D(f)).presheaf).obj V :=
+⟨bmk hm f_deg V s, sorry /-being locally a homogeneous fraction-/⟩
+
+def to_fun : (Spec (*@$\mathtt A^0_ \mathtt f$@*)).presheaf.obj V ⟶
+  ((Proj_iso_Spec_Top_component hm f_deg).hom _* (Proj| D(f)).presheaf).obj V :=
+{ to_fun := λ s, to_fun.aux 𝒜 hm f_deg V s, 
+  ..sorry /-ring homomorphism proofs-/ }
+
+end from_Spec
+
+def from_Spec : (Spec (*@$\mathtt A^0_ \mathtt f$@*)).presheaf ⟶
+  (Proj_iso_Spec_Top_component hm f_deg).hom _* (Proj| D(f)).presheaf :=
+{ app := λ V, from_Spec.to_fun 𝒜 hm f_deg V,
+  naturality' := λ _ _ _, by { ext1, simpa } }
+end Proj_iso_Spec_Sheaf_component
+\end{lstlisting}
+
+By following \Cref{thm:def-alpha}, $\alpha$ is formalised as \lstinline{Proj_iso_Spec_Sheaf_component.to_Spec}:
+\begin{lstlisting}
+namespace Proj_iso_Spec_Sheaf_component
+namespace to_Spec
+variable (U : (opens (Spec.T (*@$\mathtt A^0_ \mathtt f$@*)))ᵒᵖ)
+variable (s : ((Proj_iso_Spec_Top_component hm f_deg).hom _* 
+    (Proj| D(f))).presheaf.obj U) -- (*@$(\phi_* (\mathcal{O}_{\operatorname{Proj}}\!\mid_{D(f)}))(U)$@*)
+
+-- evaluating a section, this is s(ψ(y))
+def hl (y : unop U) : homogeneous_localization 𝒜 _ :=
+s.1 ⟨((Proj_iso_Spec_Top_component hm f_deg).inv y.1).1, _⟩
+
+-- (*@$s\mapsto \left(x\mapsto \nicefrac{\nicefrac{nd^{m-1}}{f^i}}{\nicefrac{d^m}{f^i}}\right)$ where $n, d\in\mathcal{A}_i$, this is $\nicefrac{nd^{m-1}}{f^i}$, see \Cref{thm:def-alpha}.@*)
+def num (y : unop U) : (*@$\mathtt A^0_ \mathtt f$@*) :=
+quotient.mk'
+{ deg := m * (hl hm f_deg s y).deg,
+  num := ⟨(hl hm f_deg s y).num * (hl hm f_deg s y).denom ^ m.pred, _⟩,
+  denom := ⟨f^(hl hm f_deg s y).deg, _⟩,
+  denom_mem := _ }
+
+-- (*@$s\mapsto \left(x\mapsto \nicefrac{\nicefrac{nd^{m-1}}{f^i}}{\nicefrac{d^m}{f^i}}\right)$ where $n, d\in\mathcal{A}_i$, this is $\nicefrac{d^m}{f^i}$, see \Cref{thm:def-alpha}.@*)
+def denom (y : unop U) : (*@$\mathtt A^0_ \mathtt f$@*) :=
+quotient.mk'
+{ deg := m * (hl hm f_deg s y).deg,
+  num := ⟨(hl hm f_deg s y).denom ^ m, _⟩,
+  denom := ⟨f ^ (hl hm f_deg s y).deg,_⟩,
+  denom_mem := _ }
+
+-- (*@$s\mapsto \left(x\mapsto \nicefrac{\nicefrac{nd^{m-1}}{f^i}}{\nicefrac{d^m}{f^i}}\right)$ where $n, d\in\mathcal{A}_i$, this is $\nicefrac{\nicefrac{nd^{m-1}}{f^i}}{\nicefrac{d^m}{f^i}}$, see \Cref{thm:def-alpha}.@*)
+def fmk (y : unop U) : (*@$(\mathtt A^0_ \mathtt f)_{\mathtt y}$@*) :=
+mk (num hm f_deg s y) ⟨denom hm f_deg s y, _⟩
+
+def to_fun : 
+  ((Proj_iso_Spec_Top_component hm f_deg).hom _* (Proj| D(f))).obj U ⟶ 
+  (Spec (*@$\mathtt A^0_ \mathtt f$@*)).presheaf.obj U :=
+{ to_fun := λ s, ⟨λ y, fmk hm f_deg s y, sorry /-proof of being locally a fraction-/⟩, ..sorry /-proof of being a ring homomorphism-/},
+end to_Spec
+
+def to_Spec :
+  (Proj_iso_Spec_Top_component hm f_deg).hom _* (Proj| D(f)).presheaf ⟶
+  (Spec (*@$\mathtt A^0_ \mathtt f$@*)).presheaf :=
+{ app := λ U, to_Spec.to_fun hm f_deg U,
+  naturality' := λ U V subset1, by { ext1, simpa } }
+end Proj_iso_Spec_Sheaf_component
+\end{lstlisting}
+Hence it has been shown that $(D(f), \mathcal{O}_{\operatorname{Proj}\mathcal A})\cong (\operatorname{Spec}A^0_f, \mathcal{O}_{\operatorname{Spec}A^0_f})$ as locally ringed spaces and hence $(\operatorname{Proj}\mathcal A, \mathcal{O}_{\operatorname{Proj}\mathcal A})$ is a scheme.
+\begin{lstlisting}
+def Sheaf_component:
+  (Proj_iso_Spec_Top_component hm f_deg).hom _* (Proj| D(f)).presheaf ≅
+  (Spec (*@$\mathtt A^0_ \mathtt f$@*)).presheaf :=
+{ hom := Proj_iso_Spec_Sheaf_component.to_Spec 𝒜 hm f_deg,
+  inv := Proj_iso_Spec_Sheaf_component.from_Spec 𝒜 hm f_deg,
+  ..sorry /-composition is identity-/ }
+
+def iso:
+  (Proj| D(f)) ≅ Spec (*@$\mathtt A^0_ \mathtt f$@*) :=
+let H : (Proj| D(f)).to_PresheafedSpace ≅ (Spec (*@$\mathtt A^0_ \mathtt f$@*)).to_PresheafedSpace :=
+  PresheafedSpace.iso_of_components
+    (Proj_iso_Spec_Top_component hm f_deg) (Sheaf_component 𝒜 f_deg hm) in
+LocallyRingedSpace.iso_of_SheafedSpace_iso
+{ hom := H.1, inv := H.2, hom_inv_id' := H.3, inv_hom_id' := H.4 }
+
+def Proj.to_Scheme : Scheme :=
+{ local_affine := sorry,..Proj }
+\end{lstlisting}
+
+\section{Conclusion} 
+Though the calculations involving localised ring and localised-localised ring are not sophisticated to perform with a pen and some papers, the process is considerably more cumbersome, if not harder in a theorem prover for the following reasons: 1. mathematicians always liberally write ``let $\frac a b\in A_x$'' as I did in \Cref{sec:maths}, but this is not immediately clear in a theorem prover for every element in $A_x$ is a fraction is a theorem, not a definition and the denominator $b$ carries a proof that $b\in x$ sometimes rendering \lstinline{rewrite} unusable; 2. equality like \lstinline{x*y = y*x} in $A_x$ can be proved by \lstinline{ring} tactic but \lstinline{a / b * c / d = c / b * a / d} can only be proved manually and this phenomenon is greatly exacerbated when equalities involved are long, similar to these found in \Cref{sec:maths}. Originally, I expected propositional equalities that are not equal by definition such as $\phi(\psi(y)) = y$ in \Cref{thm:homeomorph} will pose a challenge, but the difficulty is less severe: indeed, I only need to prove some redundant lemma like $\phi(\psi(y))$ is in some open sets that clearly contains $y$; the reason is that in this project I did not compare algebraic structures depending on propositional equality, i.e. $\mathcal{O}_{y}$ and $\mathcal{O}_{\phi(\psi(y))}$; but foreseeably, this difficulty will come back when one starts to develop the theory of projective variety furtherer.
+
+Since a large part of modern algebraic geometry depends on $\operatorname{Proj}$ construction, much potential future research is possible: calculating cohomology of projective spaces; proving $\operatorname{Proj}\mathcal A$ is not affine; defining projective morphisms; Serre's twisting sheaves to name a few. Other approaches to $\operatorname{Proj}$ construction also exists, for example, by gluing a family of schemes together; however, since there is no other formalisation of $\operatorname{Proj}$ construction, I could not compare different approaches or compare capabilities of formalising modern algebraic geometry of different theorem provers. Thus I would like to conclude this paper with an invitation/challenge --- state and formalise something involving more than affine schemes in your preferred theorem prover; for the only way to know which, if any, theorem provers handles modern mathematics satisfactorily is to actually formalise more modern mathematics.
 
 \bibliography{ref}
 

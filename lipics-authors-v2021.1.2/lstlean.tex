@@ -40,22 +40,22 @@ generalize, clear, revert, done, exact,
 refine, repeat, cases, rewrite, rw,
 simp, simp_all, contradiction,
 constructor, injection,
-induction,
+induction, sorry
 },
 
 % modifiers, taken from lean-syntax.el
 % note: 'otherkeywords' is needed because these use a different symbol.
 % this command doesn't allow us to specify a number -- they are put with [1]
-% otherkeywords={
-% [persistent], [notation], [visible], [instance], [trans_instance],
-% [class], [parsing-only], [coercion], [unfold_full], [constructor],
-% [reducible], [irreducible], [semireducible], [quasireducible], [wf],
-% [whnf], [multiple_instances], [none], [decl], [declaration],
-% [relation], [symm], [subst], [refl], [trans], [simp], [congr], [unify],
-% [backward], [forward], [no_pattern], [begin_end], [tactic], [abbreviation],
-% [reducible], [unfold], [alias], [eqv], [intro], [intro!], [elim], [grinder],
-% [localrefinfo], [recursor]
-% },
+otherkeywords={
+[persistent], [notation], [visible], [instance], [trans_instance],
+[class], [parsing-only], [coercion], [unfold_full], [constructor],
+[reducible], [irreducible], [semireducible], [quasireducible], [wf],
+[whnf], [multiple_instances], [none], [decl], [declaration],
+[relation], [symm], [subst], [refl], [trans], [simp], [congr], [unify],
+[backward], [forward], [no_pattern], [begin_end], [tactic], [abbreviation],
+[reducible], [unfold], [alias], [eqv], [intro], [intro!], [elim], [grinder],
+[localrefinfo], [recursor]
+},
 
 % Various symbols
 literate=
@@ -129,7 +129,7 @@ literate=
 {•}{{\ensuremath{\cdot}}}1
 {∘}{{\ensuremath{\circ}}}1
 
-%{⁻}{{\ensuremath{^{\textup{\kern1pt\rule{2pt}{0.3pt}\kern-1pt}}}}}1
+{⁻}{{\ensuremath{^{\textup{\kern1pt\rule{2pt}{0.3pt}\kern-1pt}}}}}1
 {⁻}{{\ensuremath{^{-}}}}1
 {▸}{{\ensuremath{\blacktriangleright}}}1
 
@@ -138,8 +138,8 @@ literate=
 {¬}{{\ensuremath{\neg}}}1
 {⊢}{{\ensuremath{\vdash}}}1
 
-%{⟨}{{\ensuremath{\left\langle}}}1
-%{⟩}{{\ensuremath{\right\rangle}}}1
+{⟨}{{\ensuremath{\left\langle}}}1
+{⟩}{{\ensuremath{\right\rangle}}}1
 {⟨}{{\ensuremath{\langle}}}1
 {⟩}{{\ensuremath{\rangle}}}1
 
@@ -208,6 +208,18 @@ literate=
 {·}{{\ensuremath{\cdot}}}1
 
 {▸}{{\ensuremath{\triangleright}}}1
+
+{𝒜}{{\ensuremath{\mathcal{A}}}}1
+
+{𝔭}{\ensuremath{\mathfrak{p}}}1
+
+{ᵒ}{\ensuremath{^\mathsf{o}}}1
+{ᵖ}{\ensuremath{^\mathsf{p}}}1
+
+{⋙}{\ensuremath{>\!\!>\!\!>}}1
+{≅}{\ensuremath{\cong}}1
+
+{⟶}{\ensuremath{\longrightarrow}}1
 
 {Σ}{{\color{symbolcolor}\ensuremath{\Sigma}}}1
 {Π}{{\color{symbolcolor}\ensuremath{\Pi}}}1

@@ -29,12 +29,27 @@ Wei-Liang Chow.
 \newblock {\em American Journal of Mathematics}, 71(4):893--914, 1949.
 \newblock URL: \url{http://www.jstor.org/stable/2372375}.
 
+\bibitem{mathlibrepo}
+Mathlib Contributors.
+\newblock Lean mathlib.
+\newblock \url{https://github.com/leanprover-community/mathlib}, 2022.
+
+\bibitem{docsmathlib}
+Mathlib Contributors.
+\newblock Mathlib documentation.
+\newblock \url{https://leanprover-community.github.io/mathlib_docs}, 2023.
+
 \bibitem{de2015lean}
 Leonardo de~Moura, Soonho Kong, Jeremy Avigad, Floris Van~Doorn, and Jakob von
   Raumer.
 \newblock The lean theorem prover (system description).
 \newblock In {\em International Conference on Automated Deduction}, pages
   378--388. Springer, 2015.
+
+\bibitem{godement1958topologie}
+Roger Godement.
+\newblock Topologie alg{\'e}brique et th{\'e}orie des faisceaux.
+\newblock {\em Publications de}, 1, 1958.
 
 \bibitem{hartshorne1977graduate}
 Robin Hartshorne.
