@@ -140,9 +140,9 @@ Following from the previous definitions, if $\mathcal{O}_X$ is a presheaf and $U
 \subsection{Definition of Affine Scheme and Scheme}\label{sec:def_scheme}
 
 \paragraph*{Spec construction} Let $R$ be a ring and $\operatorname{Spec} R$ denote the set of prime ideals of $R$. Then for any subset $s \subseteq R$, its zero locus is defined as $\left\{\mathfrak{p} \mid s \subseteq \mathfrak{p}\right\}$. These zero loci can be considered as closed subsets of $\operatorname{Spec} R$, the topology thus formed is called the Zariski topology. Then a sheaf of rings on $\operatorname{Spec} R$ can be defined by assign $U \subseteq \operatorname{Spec} R$ to the ring
-\[
+$$
 \left\{s : \prod_{x \in U} R_x \mid s \text{~is locally a fraction}\right\},
-\]
+$$
 where $s$ is locally a fraction if and only if for any prime ideal $x \in U$, there is always an open subset $x \in V \subseteq U$ and $a, b \in R$ such that for any prime ideal $y \in V$, $b \not\in y$ and $s(y) = \frac{a}{b}$. This sheaf $\mathcal{O}$ is called the structure sheaf of $\operatorname{Spec}R$. $(\operatorname{Spec} R, \mathcal{O})$ is a locally ringed space because for any prime ideal $x\subseteq R$, $\mathcal{O}_{x}\cong A_x$ \cite{hartshorne1977graduate}.
 
 \paragraph*{Scheme}
@@ -186,9 +186,9 @@ Similar to $\operatorname{Spec}$ construction in \Cref{sec:def_scheme}, there is
 
 \paragraph*{Structure sheaf}
 Let $U\subseteq \operatorname{Proj}\mathcal{A}$ be an open subset, the sections on $U$ are defined to be
-\[
+$$
     \mathcal{O}(U) = \left\{s \in \prod_{x\in U}A_x^0\mid s\text{~is locally a homogeneous fraction}\right\},   
-\]
+$$
 where $A^0_{\mathfrak{p}}$ denotes the homogeneous localization of $A$ at a homogeneous prime ideal $\mathfrak{p}$, i.e. the subring of $A_{\mathfrak{p}}$ of elements of degree zero and $s$ is said to be locally a homogeneous fraction if for any $x \in U$, there is some open subset $x\in V \subseteq U$, $i\in\mathbb{N}$ and $a, b\in\mathcal{A}_i$ such that for all $y\in V$, $s(y)=\frac{a}{b}$. Equipped with the natural restriction map, $\mathcal{O}$ defined in this way forms a presheaf; sheaf condition of $\mathcal{O}$ is checked in the category of sets where it follows from that being locally a homogeneous fraction is a local predicate and local predicates define subsheaves. This sheaf is called the structure sheaf of $\operatorname{Proj}\mathcal{A}$, also written as $\mathcal{O}_{\operatorname{Proj} A}$
 
 \paragraph*{Locally ringed space}
