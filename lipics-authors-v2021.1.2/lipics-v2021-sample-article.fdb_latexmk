@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex lipics-v2021-sample-article"] 1674113040 "lipics-v2021-sample-article.aux" "lipics-v2021-sample-article.bbl" "lipics-v2021-sample-article" 1674113051
+["bibtex lipics-v2021-sample-article"] 1674114109 "lipics-v2021-sample-article.aux" "lipics-v2021-sample-article.bbl" "lipics-v2021-sample-article" 1674114196
   "/opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/bibtex/bst/urlbst/plainurl.bst" 1647894602 33034 6f80d55ce824a32ed5562a5220ff287a ""
-  "lipics-v2021-sample-article.aux" 1674113051 7690 2015d591df8d1f8c2cb11fc6c8fbcc2a "pdflatex"
+  "lipics-v2021-sample-article.aux" 1674114195 7690 2015d591df8d1f8c2cb11fc6c8fbcc2a "pdflatex"
   "ref.bib" 1674103213 4071 80487f746a8aa2c3d2ab2bc60bd1a6a5 ""
   (generated)
   "lipics-v2021-sample-article.bbl"
   "lipics-v2021-sample-article.blg"
-["pdflatex"] 1674113049 "/Users/jazzon/proj_paper/lipics-authors-v2021.1.2/lipics-v2021-sample-article.tex" "lipics-v2021-sample-article.pdf" "lipics-v2021-sample-article" 1674113051
-  "/Users/jazzon/proj_paper/lipics-authors-v2021.1.2/lipics-v2021-sample-article.tex" 1674113049 59803 a388510d0048f46369191408ab4d0efe ""
+["pdflatex"] 1674114194 "/Users/jazzon/proj_paper/lipics-authors-v2021.1.2/lipics-v2021-sample-article.tex" "lipics-v2021-sample-article.pdf" "lipics-v2021-sample-article" 1674114196
+  "/Users/jazzon/proj_paper/lipics-authors-v2021.1.2/lipics-v2021-sample-article.tex" 1674114193 59882 fd74bcb1d98deb94feb73590b9e269ca ""
   "/opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/enc/dvips/fontawesome5/fa5free1.enc" 1647894602 3042 0e2b14b9be7d01075a4c4591d5d1781b ""
   "/opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1647894602 2375 baa924870cfb487815765f9094cf3728 ""
   "/opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1647894602 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
@@ -312,10 +312,10 @@
   "/opt/homebrew/Cellar/texlive/20220321_3/share/texmf-var/web2c/pdftex/pdflatex.fmt" 1647894602 2826559 b23a88c62d398565a7b31ae66b592b59 ""
   "cc-by.pdf" 1674041464 58331 68dd46bdec592205f67dc42dd8b763fc ""
   "lipics-logo-bw.pdf" 1674041464 83561 228e2a095239965e3f4546d0433e704b ""
-  "lipics-v2021-sample-article.aux" 1674113051 7690 2015d591df8d1f8c2cb11fc6c8fbcc2a "pdflatex"
-  "lipics-v2021-sample-article.bbl" 1674113040 3307 a0c1a387cc7a6bb3f5ee60f535077164 "bibtex lipics-v2021-sample-article"
-  "lipics-v2021-sample-article.out" 1674113051 2121 fb39b623015e99d2c882fda634246468 "pdflatex"
-  "lipics-v2021-sample-article.tex" 1674113049 59803 a388510d0048f46369191408ab4d0efe ""
+  "lipics-v2021-sample-article.aux" 1674114195 7690 2015d591df8d1f8c2cb11fc6c8fbcc2a "pdflatex"
+  "lipics-v2021-sample-article.bbl" 1674114109 3307 a0c1a387cc7a6bb3f5ee60f535077164 "bibtex lipics-v2021-sample-article"
+  "lipics-v2021-sample-article.out" 1674114195 2121 fb39b623015e99d2c882fda634246468 "pdflatex"
+  "lipics-v2021-sample-article.tex" 1674114193 59882 fd74bcb1d98deb94feb73590b9e269ca ""
   "lipics-v2021.cls" 1674041464 48046 9e2ace661a3448cd4e3ccc67c1941153 ""
   "lstlean.tex" 1674105229 8559 0b43b0f6e9d478e5bfd5fd9b922494fe ""
   "orcid.pdf" 1674041464 88694 b21075e0bfdd1e3bb46ba8e2af52827d ""
