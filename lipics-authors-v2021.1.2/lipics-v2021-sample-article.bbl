@@ -34,22 +34,12 @@ Mathlib Contributors.
 \newblock Lean mathlib.
 \newblock \url{https://github.com/leanprover-community/mathlib}, 2022.
 
-\bibitem{docsmathlib}
-Mathlib Contributors.
-\newblock Mathlib documentation.
-\newblock \url{https://leanprover-community.github.io/mathlib_docs}, 2023.
-
 \bibitem{de2015lean}
 Leonardo de~Moura, Soonho Kong, Jeremy Avigad, Floris Van~Doorn, and Jakob von
   Raumer.
 \newblock The lean theorem prover (system description).
 \newblock In {\em International Conference on Automated Deduction}, pages
   378--388. Springer, 2015.
-
-\bibitem{godement1958topologie}
-Roger Godement.
-\newblock Topologie alg{\'e}brique et th{\'e}orie des faisceaux.
-\newblock {\em Publications de}, 1, 1958.
 
 \bibitem{hartshorne1977graduate}
 Robin Hartshorne.
@@ -86,12 +76,6 @@ Ravi Vakil.
 \newblock The rising sea: Foundations of algebraic geometry. 2017.
 \newblock {\em URL http://virtualmath1. stanford. edu/\~{} vakil/216blog},
   24:29.
-
-\bibitem{UniMath}
-Vladimir Voevodsky, Benedikt Ahrens, Daniel Grayson, et~al.
-\newblock {UniMath --- a computer-checked library of univalent mathematics}.
-\newblock available at \url{http://unimath.org}.
-\newblock URL: \url{https://github.com/UniMath/UniMath}.
 
 \bibitem{wieser2022graded}
 Eric Wieser and Jujian Zhang.

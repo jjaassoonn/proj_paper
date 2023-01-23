@@ -98,7 +98,7 @@
 \maketitle
 
 \begin{abstract}
-    Many objects of interest in mathematics can be studied both analytically and algebraically, while at the same time, it is known that analytic geometry and algebraic geometry generally does not behave the same. However, the famous GAGA theorem asserts that for projective varieties, analytic and algebraic geometries are closely related; proof of the Fermat last theorem, for example, use this technique to transport between the two worlds \cite{serre1955geometrie}. A crucial step of proving GAGA is to calculate cohomology of projective spaces \cite{neeman2007algebraic,godement1958topologie}, thus I formalise $\operatorname{Proj}$ construction for any $\mathbb{N}$-graded $R$-algebra $A$ as a starting point to the GAGA theorem and projective $n$-space is constructed as $\operatorname{Proj} A[X_0,\dots, X_n]$. This would the first family of non-affine schemes formalised in any theorem prover.
+    Many objects of interest in mathematics can be studied both analytically and algebraically, while at the same time, it is known that analytic geometry and algebraic geometry generally does not behave the same. However, the famous GAGA theorem asserts that for projective varieties, analytic and algebraic geometries are closely related; proof of the Fermat last theorem, for example, use this technique to transport between the two worlds \cite{serre1955geometrie}. A crucial step of proving GAGA is to calculate cohomology of projective spaces \cite{neeman2007algebraic}, thus I formalise $\operatorname{Proj}$ construction for any $\mathbb{N}$-graded $R$-algebra $A$ as a starting point to the GAGA theorem and projective $n$-space is constructed as $\operatorname{Proj} A[X_0,\dots, X_n]$. This would the first family of non-affine schemes formalised in any theorem prover.
 \end{abstract}
 
 \section{Introduction}
@@ -108,7 +108,7 @@ While one can define $\mathbb{P}_n$ over $\mathbb{C}$ without consideration of o
 
 In this paper I describe a formal construction of $\operatorname{Proj} A$ in the Lean3 theorem prover \cite{de2015lean} by closely following \cite[Chapter~II]{hartshorne1977graduate}. The formal construction uses various results from the Lean mathematical library \textsf{mathlib}, most notably the graded algebra and $\operatorname{Spec}$ construction; this project has been partly accepted into \textsf{mathlib} already while the remaining part is still undergoing a review process. The code discussed in this paper can be found on GitHub\footnote{url: \texttt{https://github.com/leanprover-community/mathlib/pull/18138/}}.  I have freely used the axiom of choice and the law of excluded middle throughout this project since the rest of \textsf{mathlib} freely use classical reasoning as well; consequently, the final construction is not computable.
 
-As previously mentioned, $\operatorname{Proj}$ construction heavily depends on graded algebra and $\operatorname{Spec}$ construction. A detailed description of graded algebra in Lean and \textsf{mathlib} as well as a comparison of graded algebra with that in other theorem provers can be found in \cite{wieser2022graded}; for my purpose, I have chosen to use internal grading for any graded ring $A \cong \bigoplus \mathcal{A}_i$ so that the result of the construction is about homogeneous prime ideals of $A$ directly instead of $\bigoplus_i \mathcal{A}_i$. The earliest complete $\operatorname{Spec}$ construction in Lean can be found in \cite{buzzard2022schemes} where the construction followed a ``sheaf-on-a-basis'' approach from \cite[\href{https://stacks.math.columbia.edu/tag/01HR}{Section 01HR}]{stacks-project}, however, it differs significantly from the $\operatorname{Spec}$ construction currently found in \textsf{mathlib} where the construction follows \cite[Chapter~II]{hartshorne1977graduate}; for this reason, I have also chosen to follow the definition in \cite[Chapter~II]{hartshorne1977graduate} while hand-waving part (which is almost the whole proof) was made to be explicit. Some other theorem provers also have or partially have $\operatorname{Spec}$ construction: in Isabelle/HOL, $\operatorname{Spec}$ is formalised by using locales and rewriting topology and ring theory part of the existing library in \cite{doi:10.1080/10586458.2022.2062073}, however, the category of scheme is yet to be formalized; an early formalisation of $\operatorname{Spec}$ in Coq can be found in \cite{chicli2001formalisation} and a definition of scheme in general can be found in its \texttt{UniMath} library \cite{UniMath}; due to homotopy type theory of \texttt{Agda}, only a partial formalisation of $\operatorname{Spec}$ construction can be found in \cite{mortbergtowards}. Though some theorem provers have defined a general scheme, I could not find any concrete construction of a scheme other than $\operatorname{Spec}$ of a ring\footnote{In this paper, all rings are assumed to be unital and commutative.}.
+As previously mentioned, $\operatorname{Proj}$ construction heavily depends on graded algebra and $\operatorname{Spec}$ construction. A detailed description of graded algebra in Lean and \textsf{mathlib} as well as a comparison of graded algebra with that in other theorem provers can be found in \cite{wieser2022graded}; for my purpose, I have chosen to use internal grading for any graded ring $A \cong \bigoplus \mathcal{A}_i$ so that the result of the construction is about homogeneous prime ideals of $A$ directly instead of $\bigoplus_i \mathcal{A}_i$. The earliest complete $\operatorname{Spec}$ construction in Lean can be found in \cite{buzzard2022schemes} where the construction followed a ``sheaf-on-a-basis'' approach from \cite[\href{https://stacks.math.columbia.edu/tag/01HR}{Section 01HR}]{stacks-project}, however, it differs significantly from the $\operatorname{Spec}$ construction currently found in \textsf{mathlib} where the construction follows \cite[Chapter~II]{hartshorne1977graduate}; for this reason, I have also chosen to follow the definition in \cite[Chapter~II]{hartshorne1977graduate} while hand-waving part (which is almost the whole proof) was made to be explicit. Some other theorem provers also have or partially have $\operatorname{Spec}$ construction: in Isabelle/HOL, $\operatorname{Spec}$ is formalised by using locales and rewriting topology and ring theory part of the existing library in \cite{doi:10.1080/10586458.2022.2062073}, however, the category of scheme is yet to be formalized; an early formalisation of $\operatorname{Spec}$ in Coq can be found in \cite{chicli2001formalisation} and a definition of scheme in general can be found in its \texttt{UniMath} library; due to homotopy type theory of \texttt{Agda}, only a partial formalisation of $\operatorname{Spec}$ construction can be found in \cite{mortbergtowards}. Though some theorem provers have defined a general scheme, I could not find any concrete construction of a scheme other than $\operatorname{Spec}$ of a ring\footnote{In this paper, all rings are assumed to be unital and commutative.}.
 
 After explaining the mathematical details involved in $\operatorname{Proj}$ construction in Section~\ref{sec:maths}, Lean code will be provided and explained in Section~\ref{sec:formalisation}. For typographical reasons, some code of formalisation will be omitted and marked as \lstinline{sorry} or \lstinline{_} and some code presented in this paper is pseudocode that closely resembles the actual code but with notations and names altered to make it more readable and presentable.
 
@@ -479,7 +479,7 @@ sorry
 \end{lstlisting}
 
 \subsection{Locally Ringed Space}
-\textsf{mathlib} provides \lstinline{Top.presheaf.is_sheaf_iff_is_sheaf_comp} to check sheaf condition by composing a forgetful functor and \lstinline{Top.subsheaf_to_Types} to construct subsheaf of types satisfying a local predicate \cite{docsmathlib}; $\mathcal{O}_{\operatorname{Spec}}$ in \textsf{mathlib} adopted this approach \cite{mathlibrepo}, and structure sheaf of $\operatorname{Proj}$ will also be constructed in this way. \lstinline{is_locally_fraction} is a local predicate expressing ``being locally a homogeneous fraction'' in \Cref{sec:proj_construction_maths}:
+\textsf{mathlib} provides \lstinline{Top.presheaf.is_sheaf_iff_is_sheaf_comp} to check sheaf condition by composing a forgetful functor and \lstinline{Top.subsheaf_to_Types} to construct subsheaf of types satisfying a local predicate \cite{mathlibrepo}; $\mathcal{O}_{\operatorname{Spec}}$ in \textsf{mathlib} adopted this approach \cite{mathlibrepo}, and structure sheaf of $\operatorname{Proj}$ will also be constructed in this way. \lstinline{is_locally_fraction} is a local predicate expressing ``being locally a homogeneous fraction'' in \Cref{sec:proj_construction_maths}:
 
 \begin{lstlisting}
 def is_fraction {U : opens (Proj 𝒜)} (f : Π x : U, (*@ $\mathtt A^0_{\mathtt{x}}$ @*)) : Prop :=
@@ -613,16 +613,17 @@ def Proj_iso_Spec_Top_component:
   inv := Proj_iso_Spec_Top_component.from_Spec hm f_deg, 
   ..sorry /-composition being identity-/ }
 \end{lstlisting}
-Then by following \Cref{thm:def-beta}, $\beta$ is formalised as \lstinline{Proj_iso_Spec_Sheaf_component.from_Spec}:
+Continue using notations from \Cref{thm:def-beta}, $\beta$ is formalised as \lstinline{Proj_iso_Spec_Sheaf_component.from_Spec}:
 \begin{lstlisting}
 namespace Proj_iso_Spec_Sheaf_component
 namespace from_Spec
 
 variables (V : (opens (Spec (*@$\mathtt A^0_{\mathtt f}$@*)))ᵒᵖ) (s : (Spec (*@$\mathtt A^0_{\mathtt f}$@*)).presheaf.obj V)
+-- This is but a verbose way of spelling y is in (*@$\mathtt{\phi}^{-1}(\mathtt V)$@*) for type checking reasons.
 variables (y : ((@opens.open_embedding Proj.T D(f)).is_open_map.functor.op.obj
   ((opens.map (Proj_iso_Spec_Top_component hm f_deg).hom).op.obj V)).unop)
--- This is but a verbose way of spelling y is in (*@$\mathtt{\phi}^{-1}(\mathtt V)$@*) for type checking reasons.
 \end{lstlisting}
+By evaluation a section $s$, one obtains a family of localizations of $A^0_f$ at prime ideals $y\mapsto s(\phi(y))$, hence obtaining their respective numerators $a=\nicefrac{n_a}{f^{i_a}}$ and denominators $b = \nicefrac{n_b}{f^{i_b}}$ where $s(\phi(y)) = \nicefrac a b$.
 \begin{lstlisting}
 -- (*@Corresponding to evaluating a section in Lemma \ref{thm:def-beta}.$s(\phi(y))$@*)
 def data : structure_sheaf.localizations (*@$\mathtt A^0_{\mathtt f}$@*)
@@ -634,7 +635,9 @@ def data.num : (*@$\mathtt A^0_{\mathtt f}$@*) := sorry
 
 -- (*@$s(\phi(y))=\frac a b$, this is $b$, see \Cref{thm:def-beta}@*)
 def data.denom : (*@$\mathtt A^0_{\mathtt f}$@*) := sorry
-
+\end{lstlisting}
+Thus $\nicefrac{n_af^{i_b}}{n_bf^{i_a}}$ defines an element of $A^0_y$.
+\begin{lstlisting}
 -- (*@$s\mapsto \left(y \mapsto \nicefrac{n_af^i_b}{n_bf^{i_a}}\right)$, this is $n_af^i_b$,  see \Cref{thm:def-beta}.@*)
 def num : A :=
   (data.num _ hm f_deg s y).num * (data.denom _ hm f_deg s y).denom
@@ -643,7 +646,7 @@ def num : A :=
 def denom : A :=
   (data.denom _ hm f_deg s y).num * (data.num _ hm f_deg s y).denom
 
--- (*@$s\mapsto \left(y \mapsto \nicefrac{n_af^i_b}{n_bf^{i_a}}\right)$, this is $\nicefrac{n_af^i_b}{n_bf^{i_a}}$,  see \Cref{thm:def-beta}.@*)
+  -- (*@$s\mapsto \left(y \mapsto \nicefrac{n_af^i_b}{n_bf^{i_a}}\right)$, this is $\nicefrac{n_af^i_b}{n_bf^{i_a}}$,  see \Cref{thm:def-beta}.@*)
 def bmk : (*@$\mathtt A^0_{\mathtt y}$@*) :=
 quotient.mk'
 { deg := (data.num _ hm f_deg s y).deg + (data.denom _ hm f_deg s y).deg,
@@ -659,7 +662,9 @@ def to_fun : (Spec (*@$\mathtt A^0_ \mathtt f$@*)).presheaf.obj V ⟶
 { to_fun := λ s, to_fun.aux 𝒜 hm f_deg V s, ..sorry /-ring homomorphism proofs-/ }
 
 end from_Spec
-
+\end{lstlisting}
+After checking being a homomorphism and locally a fraction, one obtain a morphism between sheaves.
+\begin{lstlisting}
 def from_Spec : (Spec (*@$\mathtt A^0_ \mathtt f$@*)).presheaf ⟶
   (Proj_iso_Spec_Top_component hm f_deg).hom _* (Proj| D(f)).presheaf :=
 { app := λ V, from_Spec.to_fun 𝒜 hm f_deg V,
@@ -668,7 +673,7 @@ def from_Spec : (Spec (*@$\mathtt A^0_ \mathtt f$@*)).presheaf ⟶
 end Proj_iso_Spec_Sheaf_component
 \end{lstlisting}
 
-By following \Cref{thm:def-alpha}, $\alpha$ is formalised as \lstinline{Proj_iso_Spec_Sheaf_component.to_Spec}:
+With notations in \Cref{thm:def-alpha}, $\alpha$ is formalised as \lstinline{Proj_iso_Spec_Sheaf_component.to_Spec}. By evaluating a section $s$, one obtains a family $y\mapsto s(\psi(y))=\nicefrac{n}{d}$ of homogeneous localisations at $\psi(y)$. Then $x\mapsto \frac{\nicefrac{nd^{m-1}}{f^i}}{\nicefrac{d^m}{f^i}}$ defines an element in the localised ring of $A^0_f$ at $y$.
 \begin{lstlisting}
 namespace Proj_iso_Spec_Sheaf_component
 namespace to_Spec
@@ -676,7 +681,6 @@ variable (U : (opens (Spec.T (*@$\mathtt A^0_ \mathtt f$@*)))ᵒᵖ)
 variable (s : ((Proj_iso_Spec_Top_component hm f_deg).hom _* 
     (Proj| D(f))).presheaf.obj U) -- (*@$(\phi_* (\mathcal{O}_{\operatorname{Proj}}\!\mid_{D(f)}))(U)$@*)
 
--- evaluating a section, this is s(ψ(y))
 def hl (y : unop U) : homogeneous_localization 𝒜 _ :=
 s.1 ⟨((Proj_iso_Spec_Top_component hm f_deg).inv y.1).1, _⟩
 
@@ -705,7 +709,9 @@ def to_fun :
   (Spec (*@$\mathtt A^0_ \mathtt f$@*)).presheaf.obj U :=
 { to_fun := λ s, ⟨λ y, fmk hm f_deg s y, sorry /-proof of being locally a fraction-/⟩, ..sorry /-proof of being a ring homomorphism-/},
 end to_Spec
-
+\end{lstlisting}
+After checking being a ring homomorphism and locally a fraction, one obtains a morphism between sheaves.
+\begin{lstlisting}
 def to_Spec :
   (Proj_iso_Spec_Top_component hm f_deg).hom _* (Proj| D(f)).presheaf ⟶
   (Spec (*@$\mathtt A^0_ \mathtt f$@*)).presheaf :=
@@ -722,8 +728,7 @@ def Sheaf_component:
   inv := Proj_iso_Spec_Sheaf_component.from_Spec 𝒜 hm f_deg,
   ..sorry /-composition is identity-/ }
 
-def iso:
-  (Proj| D(f)) ≅ Spec (*@$\mathtt A^0_ \mathtt f$@*) :=
+def iso: (Proj| D(f)) ≅ Spec (*@$\mathtt A^0_ \mathtt f$@*) :=
 let H : (Proj| D(f)).to_PresheafedSpace ≅ (Spec (*@$\mathtt A^0_ \mathtt f$@*)).to_PresheafedSpace :=
   PresheafedSpace.iso_of_components
     (Proj_iso_Spec_Top_component hm f_deg) (Sheaf_component 𝒜 f_deg hm) in
@@ -744,7 +749,7 @@ def Proj.to_Scheme : Scheme :=
 
 \paragraph*{An example of calculation}
 Most calculations in proofs of \Cref{thm:homeomorph,thm:def-alpha,thm:def-beta} are omitted.
-I present the details of verifying $\beta_U$ preserves multiplication to showcase the flavour of calculations involved. Verifying that $\beta_U$ preserving zero and one is similar but slightly simpler while preservation of addition is more cumbersome. Since $\alpha$ only involves one layer of fractions, calculations are not as long. 
+I present the details of verifying $\beta_U$ preserves multiplication to showcase the flavour of calculations involved. Other calculations are more or less similar.
 
 Let $x, y$ be two sections, the aim is to show $\beta_U(xy)=\beta_U(x)\beta_U(y)$, i.e. for all $z\in\phi^{-1}(U)$, $\beta_U(xy)(z)=\beta_U(x)(z)\beta_U(y)(z)$.
 \begin{lstlisting}
@@ -756,20 +761,15 @@ begin
 by writing $x(\phi(z))$ as $\frac{\nicefrac{a_x}{f^{i_x}}}{\nicefrac{b_x}{f^{j_x}}}$, $y(\phi(z))$ as $\frac{\nicefrac{a_y}{f^{i_y}}}{\nicefrac{b_y}{f^{j_y}}}$ and $(xy)(\phi(z))=\frac{\nicefrac{a_{xy}}{f^{i_{xy}}}}{\nicefrac{b_{xy}}{f^{j_{xy}}}}$, one deduces that $\frac{\nicefrac{a_xa_y}{f^{i_x+i_y}}}{\nicefrac{b_xb_y}{f^{j_x+j_y}}}=\frac{\nicefrac{a_{xy}}{f^{i_{xy}}}}{\nicefrac{b_{xy}}{f^{j_{xy}}}}$, by definition of equality in localised ring, it implies that, there is some $\frac{c}{f^l}$ such that $$\frac{a_xa_yb_{xy}c}{f^{i_x+i_y+j_{xy}+l}}=\frac{a_{xy}b_xb_yc}{f^{i_{xy}+j_x+j_y+l}}.$$
 \begin{lstlisting}
   have mul_eq := data.eq_num_div_denom hm f_deg (x * y) z,
-  ... -- simplification
+  ..,
   erw is_localization.eq at mul_eq,
   obtain ⟨⟨C, hC⟩, mul_eq⟩ := mul_eq, -- C is the (*@$\nicefrac c{f^l}$@*) above.
   ...
-  
-  -- (*@$c\not\in z$@*)
-  have C_not_mem : C.num ∉ z.1.as_homogeneous_ideal := sorry,
-
   -- setting up notations.
   set a_xy := _, set i_xy := _, set b_xy := _, set j_xy := _,
   set a_x := _, set i_x := _, set b_x := _, set j_x := _,
   set a_y := _, set i_y := _, set b_y := _, set j_y := _,
   set l := _,
-  ...
 \end{lstlisting}
 By definition of equality in localisation again, there exists some $n_1\in \mathbb{N}$ such that
 \begin{equation}\label{eqn:example-intermediate}
@@ -781,27 +781,26 @@ By definition of equality in localisation again, there exists some $n_1\in \math
   obtain ⟨⟨_, ⟨n1, rfl⟩⟩, mul_eq⟩ := mul_eq,
   ...
 \end{lstlisting}
-The aim is to show $$\frac{a_{xy}f^{j_{xy}}}{b^{xy}f^{i_x}}=\frac{a_x f^{j_x}}{b^x f^{i_x}} \frac{a_y f^{j_y}}{b_y f^{i_y}},$$
-by \Cref{eqn:example-intermediate} and definition of equality in localised ring, $c f^{l+n_1}$ verifies this equality.
+By \Cref{eqn:example-intermediate} and definition of equality in localised ring, $c f^{l+n_1}$ verifies this equality $$\frac{a_{xy}f^{j_{xy}}}{b^{xy}f^{i_x}}=\frac{a_x f^{j_x}}{b^x f^{i_x}} \frac{a_y f^{j_y}}{b_y f^{i_y}},$$.
 \begin{lstlisting}
   suffices : (mk (a_xy * f ^ j_xy) ⟨b_xy * f ^ i_xy, _⟩ : localization.at_prime _) 
   = mk (a_x * f ^ j_x) ⟨b_x * f ^ i_x, _⟩ * mk (a_y * f ^ j_y) ⟨b_y * f ^ i_y, _⟩ := sorry,
     ...
   refine ⟨⟨C.num * f^(l + n1), _⟩, _⟩,
     ...
-  end
+end
 \end{lstlisting}
-In totality, this is about \textasciitilde100 lines of code by following essentially three lines of calculation when done with pen-and-papers. Admittedly, the above code is not the most optimal, but the magnitude is not greatly exaggerated. I think the following factors contribute to the differences between formalisation and a pen-and-paper-proof:
+In totality, this is about \textasciitilde100 lines of (not the most optimal) code by following essentially three lines of calculation when done with pen-and-papers. I think the following factors contribute to the differences between formalisation and a pen-and-paper-proof:
 \begin{itemize}
     \item Every element of a localised ring can be written as a fraction of a numerator and a denominator is a corollary of the construction but not straightly from its definition. Thus, many extra steps are required to set up the proof.
     \item Elements of a (homogeneously) localised ring contains not only data, but proofs as well. For example, the denominator of an element is a term \lstinline{⟨d, some_proof⟩} of a subtype. This makes \lstinline{rewrite} less smooth to use, for equalities are often of the form \lstinline{h : d = d'}, thus \lstinline{rewrite [h]} is type theoretically unsound.
     \item Terms of \lstinline{localization x} or \lstinline{homogeneous_localization 𝒜 x} have to contain proofs to make the definitions correct, thus constructing any term of these types requires many proofs or disproofs of membership. Thus, a formalised calculation cannot be as liberal as a pen-and-paper-proof when comes whether the terms are well-defined.
     \item Not many high powered tactics are available for localised ring, for example \lstinline{ring} will be able to solve \lstinline{x * y = y * x} and much more complicated goal in a commutative ring, but \lstinline{ring} cannot (and should not be able to) solve \lstinline{(a / b * c / d : localization _) = c / b * a / d}.
 \end{itemize}
-The first three bullet points are essentially all because formalisations require more rigour than that of pen-and-paper-proofs; whether the requirement of extra rigour is beneficial is another question and not in the scope of this paper. For the fourth bullet point, it is definitely helpful to have a tactic automating many proofs, the catch is that equality in localised ring is existentially quantified --- $\frac a b = \frac {a'}{b'}$ if and only if $ab' c = a' b c$ for some $c$ in a multiplicative subset. Thus, a tactic can only do so much without human input for now.
+The first three bullet points are essentially because formalisations require more rigour than that of pen-and-paper-proofs; whether the requirement of extra rigour is beneficial is not in the scope of this paper. For the fourth bullet point, it is definitely helpful to have a tactic automating many proofs, the catch is that equality in localised ring is existentially quantified --- $\frac a b = \frac {a'}{b'}$ if and only if $ab' c = a' b c$ for some $c$ in a multiplicative subset. Thus, a tactic can only do so much without human input for now.
 
 \paragraph*{On propositional equality}
-Originally, I expected propositional equalities that are not equal by definition such as $\phi(\psi(y)) = y$ in \Cref{thm:homeomorph} will pose a challenge, but the difficulty is less severe: indeed, I only need to prove some redundant lemma like $\phi(\psi(y))$ is in some open sets that clearly contains $y$; the reason is that in this project I did not compare algebraic structures depending on propositional equality, i.e. $\mathcal{O}_{y}$ and $\mathcal{O}_{\phi(\psi(y))}$; but foreseeably, this difficulty will come back when one starts to develop the theory of projective variety furtherer.
+Originally, I expected propositional equalities that are not equal by definition such as $\phi(\psi(y)) = y$ in \Cref{thm:homeomorph} will pose a challenge, but the difficulty is less severe and can be solved by providing some mathematically irrelevant lemma --- indeed, I only need to prove some redundant lemma for $\phi(\psi(y))$ when it is true for $y$; the reason is that this project did not involve comparing algebraic structures depending on propositional equalities, for example $\mathcal{O}_{X, x}$ and $\mathcal{O}_{Y, \phi(x)}$ are isomorphic when $X, Y$ are isomorphic as schemes; but foreseeably, this difficulty will come back when one starts to develop the theory of projective variety furtherer. The solution to this problem is to build more APIs especially congruence lemmas.
 
 \section{Conclusion} 
 
