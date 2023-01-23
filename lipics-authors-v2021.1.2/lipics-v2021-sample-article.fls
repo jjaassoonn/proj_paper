@@ -1573,6 +1573,12 @@ INPUT /opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/tfm/public/
 INPUT /opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/tfm/public/lm/ec-lmri7.tfm
 INPUT /opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/tfm/public/lm/rm-lmss9.tfm
 INPUT /opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/tfm/public/lm/rm-lmss8.tfm
+INPUT /opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/tfm/public/lm/rm-lmss8.tfm
+INPUT /opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/tfm/public/amsfonts/euler/eufm10.tfm
+INPUT /opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/tfm/public/amsfonts/euler/eufm5.tfm
+INPUT /opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/tfm/public/amsfonts/euler/eufm5.tfm
+INPUT /opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/tfm/public/lm/rm-lmss9.tfm
+INPUT /opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/tfm/public/lm/rm-lmss8.tfm
 INPUT /opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/tfm/public/amsfonts/euler/eufm10.tfm
 INPUT /opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/tfm/public/amsfonts/euler/eufm7.tfm
 INPUT /opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/tex/latex/lm/ts1lmtt.fd

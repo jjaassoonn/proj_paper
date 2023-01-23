@@ -12,45 +12,45 @@ Warning--empty journal in mortbergtowards
 Warning--empty year in mortbergtowards
 Warning--there's a number but no series in neeman2007algebraic
 Warning--empty year in vakil24rising
-You've used 16 entries,
+You've used 17 entries,
             2882 wiz_defined-function locations,
-            715 strings with 7401 characters,
-and the built_in function-call counts, 6534 in all, are:
-= -- 677
-> -- 212
+            721 strings with 7622 characters,
+and the built_in function-call counts, 6965 in all, are:
+= -- 719
+> -- 236
 < -- 4
-+ -- 78
-- -- 60
-* -- 307
-:= -- 942
-add.period$ -- 52
-call.type$ -- 16
-change.case$ -- 75
++ -- 87
+- -- 68
+* -- 328
+:= -- 1004
+add.period$ -- 56
+call.type$ -- 17
+change.case$ -- 81
 chr.to.int$ -- 0
-cite$ -- 20
-duplicate$ -- 192
-empty$ -- 645
-format.name$ -- 60
-if$ -- 1731
+cite$ -- 21
+duplicate$ -- 201
+empty$ -- 686
+format.name$ -- 68
+if$ -- 1844
 int.to.chr$ -- 0
-int.to.str$ -- 16
+int.to.str$ -- 17
 missing$ -- 14
-newline$ -- 84
-num.names$ -- 32
-pop$ -- 173
+newline$ -- 90
+num.names$ -- 34
+pop$ -- 188
 preamble$ -- 1
-purify$ -- 62
+purify$ -- 67
 quote$ -- 0
-skip$ -- 485
+skip$ -- 514
 stack$ -- 0
-substring$ -- 242
-swap$ -- 45
+substring$ -- 247
+swap$ -- 46
 text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 60
+type$ -- 64
 warning$ -- 4
-while$ -- 47
-width$ -- 18
-write$ -- 176
+while$ -- 49
+width$ -- 19
+write$ -- 187
 (There were 4 warnings)
